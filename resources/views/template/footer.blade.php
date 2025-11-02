@@ -4,7 +4,6 @@
             <div class="col-12 col-md-6">
                 <h2 class="font-utama">SIRATA</h2>
                 <p>Keamanan Warga,<br>Tanggung Jawab Bersama.</p>
-
             </div>
             <div class="col-12 col-md-6">
                 <p>Contect us:</p>
