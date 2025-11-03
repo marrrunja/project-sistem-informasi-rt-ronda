@@ -23,9 +23,9 @@
                     siskamling lebih aman, tertib dan transparan.
                 </p>
                 <div class="d-flex gap-3">
-                    <button class="btn btn-success py-2 fw-semibold shadow-sm">Masuk ke Sistem</button>
-                    <button class="btn btn-outline-success py-2 fw-semibold color-utama shadow-sm">Daftar Akun
-                        Warga</button>
+                    <a href="/login" class="btn btn-success py-2 fw-semibold shadow-sm">Masuk ke Sistem</a>
+                    <a href="/register" class="btn btn-outline-success py-2 fw-semibold color-utama shadow-sm">Daftar Akun
+                        Warga</a>
                 </div>
             </div>
             <div class="col-12 col-md-12 col-xl-6 text-center mb-4 mb-md-4 mb-xl-0">
