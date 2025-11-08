@@ -21,6 +21,7 @@ class DashboardController extends Controller
     {
         return view('user.laporan');
     }
+    
     public function laporanAll()
     {
         return view('user.laporan-all');

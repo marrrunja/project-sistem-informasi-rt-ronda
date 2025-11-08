@@ -37,8 +37,12 @@
                         <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-12 col-md-12 col-xl-10">
                                 <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
+                                    <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <a href="#" rel="noopener noreferrer"
+                                            class="text-decoration-none text-dark">Aktivitas Mencurigakan</a>
+                                    </h5>
+                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
+                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
 
@@ -50,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>
@@ -61,7 +65,8 @@
                             <div class="col-12 col-md-12 col-xl-10">
                                 <div class="d-flex flex-column">
                                     <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
+                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
+                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
 
@@ -73,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>
@@ -84,7 +89,8 @@
                             <div class="col-12 col-md-12 col-xl-10">
                                 <div class="d-flex flex-column">
                                     <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
+                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
+                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
                             </div>
@@ -95,13 +101,87 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex flex-column gy-3">
+                    <h1 class="modal-title fs-5 mb-1" id="exampleModalLabel">Aktivitas Mencurigakan</h1>
+                    <small>Dilaporkan Oleh Dina</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="d-flex flex-column">
+                        <div class="mb-2">Deskripsi Kejadian</div>
+                        <div class="text-body-secondary">
+                            Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30
+                            WIB lebih tepatnya pada Blok C. Orang tersebut menggunakan jaket kulit hitam dan topi hitam,
+                            berjalan kaki sambil melihat-lihat ke arah rumah warga. Cukup mencurigakan karena sudah
+                            larut malam.
+                        </div>
+                        <div class="fw-semibold mb-2 mt-2">Bukti Foto</div>
+
+                        <div class="card border-0 text-bg-dark" style="width:200px;" data-bs-toggle="modal"
+                            data-bs-target="#modalFoto">
+                            <img src="{{ asset('resources/images/placeholder.png') }}" class="card-img" alt="...">
+                        </div>
+
+                        <div class="fw-semibold mt-2 mb-2">
+                            Status & Tindak Lanjut
+                        </div>
+                        <div class="mt-2">
+
+                            <div class="mb-2">Riwayat Pengajuan</div>
+                            <ul>
+                                <li>
+                                    <div class="text-dark">Laporan diajukan</div>
+                                    <div class="text-body-secondary">
+                                        Laporan telah berhasil dikirim dan menunggu verifikasi ketua RT
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-utama" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalFoto" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+    aria-labelledby="modalFoto" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-close"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card border-0 text-bg-dark">
+                    <img src="{{ asset('resources/images/placeholder.png') }}" class="card-img" alt="foto bukti">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include('template.footer')
 @endsection
 
@@ -110,4 +190,3 @@
 
 </script>
 @endpush
-

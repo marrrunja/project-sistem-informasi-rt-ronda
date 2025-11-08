@@ -155,6 +155,7 @@
         </div>
     </div>
 </section>
+@include('template.footer')
 @endsection
 
 @push('scripts')
