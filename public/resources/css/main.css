@@ -23,3 +23,42 @@
     background-color: #355E52;
     color: white;
 }
+.btn-utama{
+    background-color: #355E52;
+    color: white;
+}
+.btn-utama:hover{
+    background-color: #2e5247 !important;
+    color: white !important;
+}
+.bg-jadwal{
+    background-color: #F5F7F6;
+}
+
+.bg-active{
+    background-color:rgba(54, 84, 92, .5);
+}
+.bg-abu{
+    background-color: #F5F7F6;
+}
+#kehadiran{
+    width: 100%;
+    height: 30px;
+}
+
+#kehadiran::-webkit-meter-bar {
+  background: #eee; /* warna dasar track */
+  border-radius: 5px;
+}
+
+#kehadiran::-webkit-meter-optimum-value {
+ background: #355E52;
+}
+
+#kehadiran::-webkit-meter-suboptimum-value {
+  background: yellow; /* warna saat nilai sedang */
+}
+
+#kehadiran::-webkit-meter-even-less-good-value {
+  background: red; /* warna saat nilai rendah */
+}

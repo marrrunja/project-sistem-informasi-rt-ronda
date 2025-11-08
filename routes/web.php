@@ -17,4 +17,7 @@ Route::controller(AuthController::class)->group(function(){
 
 Route::controller(DashboardController::class)->group(function(){
     Route::get('/user/dashboard', 'index');
+    Route::get('/user/jadwal', 'jadwal');
+    Route::get('/user/laporan', 'laporan');
+    Route::get('user/laporan/all', 'laporanAll');
 });

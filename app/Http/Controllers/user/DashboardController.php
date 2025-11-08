@@ -11,4 +11,18 @@ class DashboardController extends Controller
     {
         return view('user.main');
     }
+
+    public function jadwal()
+    {
+        return view('user.jadwal');
+    }
+
+    public function laporan()
+    {
+        return view('user.laporan');
+    }
+    public function laporanAll()
+    {
+        return view('user.laporan-all');
+    }
 }
