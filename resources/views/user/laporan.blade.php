@@ -96,7 +96,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-5 col-md-8 col-xl-2">
+                            <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>4 November 2025</small>
                                     <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
@@ -107,29 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-10">
-                <div class="card py-2 px-3 border-0">
-                    <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-12 col-md-12 col-xl-10">
-                                <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
-                                </div>
-
-                            </div>
-                            <div class="col-5 col-md-8 col-xl-2">
-                                <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
-                                </div>
-                            </div>
-                        </div>
-                      
-                    </div>
-                </div>
-            </div>
+           
             <div class="col-12 col-md-10">
                 <div class="card py-2 px-3 border-0">
                     <div class="card-body">
@@ -141,7 +119,7 @@
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
                             </div>
-                            <div class="col-5 col-md-8 col-xl-2">
+                            <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>4 November 2025</small>
                                     <span class="badge text-bg-warning w-sm-25 w-md-25 w-lg-25 mt-2">Ditinjau</span>

@@ -47,7 +47,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-5 col-md-8 col-xl-2">
+                            <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>4 November 2025</small>
                                     <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
@@ -71,7 +71,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-5 col-md-8 col-xl-2">
+                            <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>4 November 2025</small>
                                     <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
@@ -94,7 +94,7 @@
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
                             </div>
-                            <div class="col-5 col-md-8 col-xl-2">
+                            <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>4 November 2025</small>
                                     <span class="badge text-bg-warning w-sm-25 w-md-25 w-lg-25 mt-2">Ditinjau</span>
@@ -110,6 +110,7 @@
 </section>
 
 
+<!-- modal, nanti pakein ajax -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
