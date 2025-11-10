@@ -20,4 +20,5 @@ Route::controller(DashboardController::class)->group(function(){
     Route::get('/user/jadwal', 'jadwal');
     Route::get('/user/laporan', 'laporan');
     Route::get('user/laporan/all', 'laporanAll');
+    Route::get('user/profile', 'profil');
 });

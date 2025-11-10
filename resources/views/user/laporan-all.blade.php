@@ -45,7 +45,6 @@
                                         hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
                                     <small>Dilaporkan oleh Dina Putri </small>
                                 </div>
-
                             </div>
                             <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
@@ -78,7 +77,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

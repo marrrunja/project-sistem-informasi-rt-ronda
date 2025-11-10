@@ -26,4 +26,8 @@ class DashboardController extends Controller
     {
         return view('user.laporan-all');
     }
+
+    public function profil(){
+        return view('user.profile');
+    }
 }
