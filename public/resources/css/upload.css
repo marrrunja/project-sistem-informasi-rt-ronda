@@ -7,6 +7,9 @@
         cursor: pointer;
         position: relative;
     }
+    .upload-box.invalid-box{
+         border: 2px dashed red !important;
+    }
 
     .upload-box:hover {
         border-color: #1cd83a;

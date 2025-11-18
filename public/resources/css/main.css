@@ -62,3 +62,9 @@
 #kehadiran::-webkit-meter-even-less-good-value {
   background: red; /* warna saat nilai rendah */
 }
+.hover-pointer:hover{
+    cursor: pointer;
+}
+.active{
+    border-bottom: 2px solid #355E52;
+}

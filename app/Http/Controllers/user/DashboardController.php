@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\user;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('user.main');
+        $user = User::where('username', $request->session()->get('username'))->first();
+        $data= [
+            'data' => $user
+        ];
+        return view('user.main', $data);
     }
 
     public function jadwal()
@@ -17,15 +22,7 @@ class DashboardController extends Controller
         return view('user.jadwal');
     }
 
-    public function laporan()
-    {
-        return view('user.laporan');
-    }
-    
-    public function laporanAll()
-    {
-        return view('user.laporan-all');
-    }
+
 
     public function profil(){
         return view('user.profile');

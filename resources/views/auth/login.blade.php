@@ -12,28 +12,47 @@
 @section('body')
 <section id="login" class="d-flex justify-content-center align-items-center" style="height:100vh">
     <div class="container">
-        <form action="">
+        <form action="{{ route('auth.login') }}" method="post">
+            @csrf
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-12 col-md-7">
                     <div class="card shadow-sm border-0 p-3 p-md-5">
                         <div class="card-body">
                             <h3 class="card-title font-utama color-utama text-center">SIRATA</h3>
                             <h4 class="mb-3 text-center mt-3">Login Akun</h4>
+                            @if(Session::has('status'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ Session::get('status') }}
+                            </div>
+                            @endif
                             <div class="mb-3">
                                 <label for="username" class="form-label fw-semibold">Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Masukkan username">
-
-
+                                <input type="text" name="username"
+                                    class="form-control @error('username') is-invalid @enderror" id="username"
+                                    placeholder="Masukkan username">
+                                @error('username')
+                                <span class="error invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label fw-semibold">Password</label>
-                                <input type="passowrd" class="form-control" id="password" placeholder="Masukkan password">
+                                <input type="password" name="password"
+                                    class="form-control  @error('username') is-invalid @enderror" id="password"
+                                    placeholder="Masukkan password">
+                                @error('password')
+                                <span class="error invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <button class="btn btn-success form-control fw-semibold">Login</button>
                             </div>
                             <div class="text">
-                                <p class="text-center">Belum punya akun? <a href="/register"class="color-utama fw-semibold">Register</a></p>
+                                <p class="text-center">Belum punya akun? <a href="/register"
+                                        class="color-utama fw-semibold">Register</a></p>
                             </div>
                         </div>
                     </div>

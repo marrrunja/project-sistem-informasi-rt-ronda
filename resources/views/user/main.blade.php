@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1>Selamat datang, Muammar!</h1>
+                <h1>Selamat datang, {{ Session::get('username') }}</h1>
             </div>
             <div class="col-12 mt-2">
                 <p class="color-utama">Berikut adalah ringkasan informasi keamanan di lingkungan Anda</p>
@@ -176,3 +176,6 @@
 
 @include('template.footer')
 @endsection
+
+@push('scripts')
+@endpush

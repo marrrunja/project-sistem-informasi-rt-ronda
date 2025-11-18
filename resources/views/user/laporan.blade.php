@@ -30,7 +30,10 @@
 
 <section id="laporan" class="pt-1 pb-3">
     <div class="container">
-        <form action="">
+        @if(Session::has('alert'))
+        <div id="message" data-alert="{{ Session::get('alert') }}">{{Session::get('message')}}</div>
+        @endif
+        <form action="{{ route('reports.add') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-12 col-md-10">
@@ -41,27 +44,47 @@
 
                         <div class="mb-3">
                             <label for="" class="form-label">Jenis Laporan</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Pilih jenis laporan</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select @error('kategori') is-invalid @enderror" name="kategori"
+                                aria-label="Default select example">
+                                <option selected value="">Pilih jenis laporan</option>
+                                @foreach(\App\Models\Kategori::all() as $kategori)
+                                <option value="{{ $kategori->id }}">{{ $kategori->kategori }}</option>
+                                @endforeach
                             </select>
+                            @error('kategori')
+                            <span class="error invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi Kejadian</label>
-                            <textarea name="" rows="5" id="deskripsi" placeholder="Jelaskan kejadian secara rinci.."
-                                class="form-control"></textarea>
+                            <textarea name="deskripsi" rows="5" id="deskripsi"
+                                placeholder="Jelaskan kejadian secara rinci.."
+                                class="form-control @error('deskripsi') is-invalid @enderror">
+                                {{ old('deskripsi') ?? '' }}
+                            </textarea>
+                            @error('deskripsi')
+                            <span class="error invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Unggah Satu Foto Bukti <span
                                     class="text-muted">(Optional)</span></label>
-                            <div class="upload-box" id="uploadArea">
-                                <input type="file" id="fileInput" accept=".png, .jpg, .jpeg">
-                                <i class="bi bi-cloud-arrow-up mb-2"></i>
-                                <div class="upload-label">Unggah file</div>
-                                <p>PNG dan JPG hingga 10MB</p>
+                            <!--  accept=".png, .jpg, .jpeg" -->
+                            <div class="upload-box @error('foto') invalid-box @enderror" id="uploadArea">
+                                <input type="file" name="foto" id="fileInput">
+                                <i class="bi bi-cloud-arrow-up mb-2 @error('foto') text-danger @enderror"></i>
+                                <div class="upload-label @error('foto') text-danger @enderror">Unggah file</div>
+                                <p class="@error('foto') text-danger @enderror">PNG dan JPG hingga 3MB</p>
                             </div>
+                            @error('foto')
+                            <span class="text-danger mt-2 fs-6">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         <div class="mb-3 text-end">
                             <button class="btn btn-utama w-sm-50 w-md-25" style="font-size:1.1rem;"><i
@@ -84,56 +107,61 @@
             </div>
         </div>
         <div class="row gy-3">
-            <div class="col-12 col-md-10">
-                <div class="card py-2 px-3 border-0">
-                    <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-12 col-md-12 col-xl-10">
-                                <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
-                                </div>
+            @php
+            $color = null;
+            @endphp
+            @foreach($reports as $report)
+                @php $color = 'primary'; @endphp
 
-                            </div>
-                            <div class="col-5 col-md-5 col-xl-2">
-                                <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
-                                </div>
-                            </div>
-                        </div>
-                      
-                    </div>
-                </div>
-            </div>
-           
+                @switch($report->status)
+                    @case('Diajukan')
+                        @php $color = 'primary'; @endphp
+                        @break
+
+                    @case('Ditinjau')
+                        @php $color = 'warning'; @endphp
+                        @break
+
+                    @case('Selesai')
+                        @php $color = 'success'; @endphp
+                        @break
+
+                    @default
+                        @php $color = 'primary'; @endphp
+                @endswitch
             <div class="col-12 col-md-10">
                 <div class="card py-2 px-3 border-0">
                     <div class="card-body">
                         <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-12 col-md-12 col-xl-10">
                                 <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
+                                    <h5 class="card-title">{{$report->kategori}}</h5>
+                                    <div class="mb-2">{{ Str::words($report->isi_laporan, 20) }}</div>
+                                    <small>Dilaporkan oleh {{$report->nama_lengkap}}</small>
                                 </div>
                             </div>
                             <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-warning w-sm-25 w-md-25 w-lg-25 mt-2">Ditinjau</span>
+                                    <small>
+                                        {{ \Carbon\Carbon::parse($report->created_at)->translatedFormat('j F Y') }}
+                                    </small>
+                                    <span class="badge text-bg-{{ $color }} w-sm-25 w-md-25 w-lg-25 mt-2">
+                                        {{ $report->status }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>
+            @endforeach
+
         </div>
     </div>
 </section>
 @include('template.footer')
+
 @endsection
 
 @push('scripts')
