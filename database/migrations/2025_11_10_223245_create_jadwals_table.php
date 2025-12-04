@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
             $table->date('jadwal_masuk');
+            $table->boolean('is_aktif')->default(true);
             $table->timestamps();
         });
     }

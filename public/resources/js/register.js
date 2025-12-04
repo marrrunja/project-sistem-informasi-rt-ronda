@@ -3,7 +3,7 @@ import { showAlertError, showAlertSuccess } from "./utility/alert.js";
 const formRegister = document.getElementById("formRegister");
 
 
-console.log(BASEURL);
+
 
 async function register(username, nama, passsword, password2)
 {

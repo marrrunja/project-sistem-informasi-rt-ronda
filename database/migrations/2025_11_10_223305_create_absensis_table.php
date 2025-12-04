@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('absensis', function (Blueprint $table) {
             $table->id();
             $table->boolean('status');
+            $table->boolean('clear_absen')->default(false);
             $table->unsignedBigInteger('id_jadwal');
             $table->unsignedBigInteger('user_id');
             $table->foreign('id_jadwal')->references('id')->on('jadwals');

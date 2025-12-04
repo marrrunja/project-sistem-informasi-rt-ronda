@@ -34,6 +34,7 @@ class AuthController extends Controller
             'username.required' => 'Username harus diisi!',
             'username.min' => 'Username minimal 5 karakter!',
             'username.max' => 'Username maximal 10 karakter!',
+            'username.alpha_dash' => 'Username tidak boleh memiliki spasi!!',
             'nama_lengkap.required' => 'Nama lengkap harus diisi!',
             'nama_lengkap.min' => 'Nama lengkap Minimal 5 karakter!',
             'nama_lengkap.max' => 'Nama lengkap maksimal 20 karakter!',
@@ -44,7 +45,7 @@ class AuthController extends Controller
         ];
         $request->validate(
             [
-            'username' => ['required', 'min:5', 'max:10'],
+            'username' => ['required', 'min:5', 'max:10', 'alpha_dash'],
             'nama_lengkap' => ['required', 'min:5', 'max:20'],
             'password' => ['required', 'min:5'],
             'password2' => ['required', 'same:password']

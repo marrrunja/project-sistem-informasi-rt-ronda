@@ -29,6 +29,10 @@ class AuthService{
     {
         $user = User::where('username', '=', $data['username'])->first();
         if ($user) {
+            if($user->status == "0"){
+                $error = "Akun sudah diblokir";
+                return false;
+            }
             if (Hash::check($data['password'], $user->password)) {
                 $id = $user->id;
                 $is_admin = $user->is_admin == 1 ? true:false;

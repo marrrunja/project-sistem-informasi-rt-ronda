@@ -9,22 +9,22 @@ let offset = 0;
 const loading = document.getElementById("loading");
 let container = document.getElementById("laporan-container");
 const modalBody = document.getElementById("body-modal");
-console.log(modalBody);
 
 
 function hilangkanElemenPesan(){
     document.getElementById("pesan").innerText = "";
 }
+function showElemenPesan(pesan){
+    document.getElementById("pesan").innerText = pesan;
+}
 async function getData(){
     try{
         loading.style.display = "inline-block";
         let totalData = await getTotalDataFromReport(BASEURL);
-        console.log(totalData.total);
+
         if(offset >= totalData.total){
-            document.getElementById("pesan").innerText = "Sudah mencapai batas!!";
-            setTimeout(function(){
-                hilangkanElemenPesan();
-            }, 1500);
+            showElemenPesan("Sudah Mencapai Batas!!!");
+            setTimeout(hilangkanElemenPesan,1500);
             loading.style.display = "none";
             return;
         }
@@ -58,13 +58,10 @@ async function getData(){
                 </div>`;
         });
         offset += 10;
-        console.log("offset di get data ",offset )
         loading.style.display = "none";
     }catch(error){
-        document.getElementById("pesan").innerText = error;
-        setTimeout(function(){
-            hilangkanElemenPesan();
-        }, 1500);
+        showElemenPesan(error);
+        setTimeout(hilangkanElemenPesan, 1500);
         loading.style.display = "none";
     }
 }
@@ -85,7 +82,6 @@ async function showDetailData(e){
 }
 
 async function showFotoFromReport(e){
-    console.log(e.target);
     if(e.target.classList.contains("modal-foto")){
         try{
             const data = await getFotoFromReport(BASEURL, e.target.dataset.id);

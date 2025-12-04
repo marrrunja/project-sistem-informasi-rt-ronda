@@ -27,11 +27,13 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-          Profil
+          {{ Session::get('username') ?? 'User' }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li class="dropdown-item-text fw-semibold">
-              {{ Session::get('nama_lengkap') ?? 'User' }}
+              <a href="/user/profile" class="text-dark text-decoration-none">
+                <i class="bi bi-person-circle"></i> Profil
+              </a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
