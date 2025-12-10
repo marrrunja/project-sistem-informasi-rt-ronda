@@ -13,8 +13,101 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.main');
+        // ============================================
+        // 1. DATA DASAR DASHBOARD
+        // ============================================
+
+        // Total laporan
+        $totalLaporan = DB::table('reports')->count();
+
+        // Total warga (non-admin)
+        $totalWarga = DB::table('users')
+            ->where('is_admin', 0)
+            ->count();
+
+
+        // ============================================
+        // 2. PERSENTASE KEHADIRAN MINGGU INI
+        // ============================================
+
+        $startOfWeek = now()->startOfWeek(); // Senin
+        $endOfWeek   = now()->endOfWeek();   // Minggu
+
+        // Ambil semua jadwal minggu ini
+        $jadwalMingguanIds = DB::table('jadwals')
+            ->where('is_aktif', 1) // hanya yang aktif
+            ->whereBetween('jadwal_masuk', [$startOfWeek, $endOfWeek])
+            ->pluck('id');
+
+        if ($jadwalMingguanIds->isEmpty()) {
+            $persentaseKehadiran = 0;
+        } else {
+
+            $totalAbsensi = DB::table('absensis')
+                ->whereIn('id_jadwal', $jadwalMingguanIds)
+                ->count();
+
+            $totalHadir = DB::table('absensis')
+                ->whereIn('id_jadwal', $jadwalMingguanIds)
+                ->where('status', 1)
+                ->count();
+
+            $persentaseKehadiran = $totalAbsensi > 0
+                ? round(($totalHadir / $totalAbsensi) * 100)
+                : 0;
+        }
+
+
+        // ============================================
+        // 3. GRAFIK — BERDASARKAN 7 JADWAL AKTIF TERAKHIR
+        // ============================================
+
+        $jadwals = DB::table('jadwals')
+            ->where('is_aktif', 1) // hanya jadwal aktif
+            ->orderBy('jadwal_masuk', 'desc')
+            ->take(7)
+            ->get();
+
+        // TOTAL JADWAL HANYA YANG AKTIF
+        $totalJadwal = DB::table('jadwals')
+            ->where('is_aktif', 1)
+            ->count();
+
+        $labels = [];
+        $data = [];
+
+        foreach ($jadwals as $jadwal) {
+
+            $hadir = DB::table('absensis')
+                ->where('id_jadwal', $jadwal->id)
+                ->where('status', 1)
+                ->count();
+
+            $persentase = $totalWarga > 0
+                ? round(($hadir / $totalWarga) * 100)
+                : 0;
+
+            $labels[] = \Carbon\Carbon::parse($jadwal->jadwal_masuk)->format('d M');
+            $data[] = $persentase;
+        }
+
+
+        // ============================================
+        // 4. DATA DIKIRIM KE VIEW
+        // ============================================
+
+        $data = [
+            'labels' => $labels,
+            'data' => $data,
+            'total_warga' => $totalWarga,
+            'total_jadwal' => $totalJadwal,
+            'persentase_kehadiran' => $persentaseKehadiran,
+            'total_laporan' => $totalLaporan
+        ];
+
+        return view('admin.main', $data);
     }
+
 
     public function laporan(Request $request)
     {

@@ -13,9 +13,6 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = User::where('username', $request->session()->get('username'))->first();
-
-
-
         $jadwal = DB::table('jadwals')->where('is_aktif', '=', 1)
                 ->orderBy('jadwal_masuk', 'asc')
                 ->get();

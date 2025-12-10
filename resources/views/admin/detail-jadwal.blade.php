@@ -62,14 +62,14 @@
     <div class="col-12">
         <div class="card border shadow">
             <div class="card-body">
-
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0">Anggota Ronda</h5>
-
+                    @if($is_aktif)
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahAnggota">
                         <i class="bi bi-person-plus"></i> Tambah
                     </button>
+                    @endif
                 </div>
 
                 <!-- List Anggota -->
@@ -92,7 +92,7 @@
                             @if($is_aktif)
                             <form class="form-hapus" action="{{ route('absensi.hapus', $absen->id) }}" method="post">
                                 @csrf
-                                <button class="btn btn-outline-danger btn-sm py-2 px-4 btn-hapus" >
+                                <button class="btn btn-outline-danger btn-sm py-2 px-4" >
                                     <i class="bi bi-trash"></i>Hapus
                                 </button>
                             </form>

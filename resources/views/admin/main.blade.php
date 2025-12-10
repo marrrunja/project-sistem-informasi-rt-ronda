@@ -1,111 +1,132 @@
 @extends('template.template-admin')
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+@endpush
 @section('body')
-<div class="row">
-    <div class="col-lg-8 d-flex align-items-strech">
-        <div class="card w-100">
-            <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <div class="mb-3 mb-sm-0">
-                        <h5 class="card-title fw-semibold">Sales Overview</h5>
-                    </div>
-                    <div>
-                        <select class="form-select">
-                            <option value="1">March 2023</option>
-                            <option value="2">April 2023</option>
-                            <option value="3">May 2023</option>
-                            <option value="4">June 2023</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="chart"></div>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-lg-4">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card overflow-hidden">
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
-
-                        <div class="row align-items-center">
-                            <div class="col-8">
-
-                                <h4 class="fw-semibold mb-3">$36,358</h4>
-
-                                <div class="d-flex align-items-center mb-3">
-                                    <span class="me-1 rounded-circle bg-light-success round-20 d-flex
-                                                        align-items-center justify-content-center">
-                                        <i class="ti ti-arrow-up-left text-success"></i>
-                                    </span>
-                                    <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                    <p class="fs-3 mb-0">last year</p>
-                                </div>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="me-4">
-                                        <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                                        <span class="fs-2">2023</span>
-                                    </div>
-                                    <div>
-                                        <span
-                                            class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                                        <span class="fs-2">2023</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4">
-                                <div class="d-flex justify-content-center">
-                                    <div id="breakup"></div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row alig n-items-start">
-                            <div class="col-8">
-
-                                <h5 class="card-title mb-9 fw-semibold"> Monthly Earnings </h5>
-                                <h4 class="fw-semibold mb-3">$6,820</h4>
-
-                                <div class="d-flex align-items-center pb-1">
-                                    <span
-                                        class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-arrow-down-right text-danger"></i>
-                                    </span>
-                                    <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                    <p class="fs-3 mb-0">last year</p>
-                                </div>
-
-                            </div>
-                            <div class="col-4">
-                                <div class="d-flex justify-content-end">
-                                    <div class="text-white bg-secondary rounded-circle p-6 d-flex
-                                                        align-items-center justify-content-center">
-                                        <i class="ti ti-currency-dollar fs-6"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div id="earning"></div>
-                </div>
-            </div>
-
-        </div>
+<div class="row mb-4">
+    <div class="col-lg-12">
+        <h4 class="fw-bold">Selamat Datang Budi</h4>
+        <p class="text-muted">Berikut adalah ringkasan status keamanan di lingkungan Anda</p>
     </div>
 </div>
+
+<div class="row g-3">
+
+    <!-- Kehadiran -->
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border rounded-2">
+            <h6 class="text-muted">Kehadiran Ronda</h6>
+            <h3 class="fw-bold">{{$persentase_kehadiran}}%</h3>
+            <small class="text-muted">Minggu ini</small>
+        </div>
+    </div>
+
+    <!-- Laporan Kejadian -->
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border rounded-2">
+            <h6 class="text-muted">Jumlah Laporan Kejadian</h6>
+            <h3 class="fw-bold">{{$total_laporan}}</h3>
+            <small class="text-muted">Total laporan diterima</small>
+        </div>
+    </div>
+
+    <!-- Warga Terdaftar -->
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border rounded-2">
+            <h6 class="text-muted">Warga Terdaftar</h6>
+            <h3 class="fw-bold">{{ $total_warga }}</h3>
+            <small class="text-muted">Stabil</small>
+        </div>
+    </div>
+
+    <!-- Jadwal Aktif -->
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm border rounded-2">
+            <h6 class="text-muted">Jadwal Aktif</h6>
+            <h3 class="fw-bold">{{ $total_jadwal }}</h3>
+            <small class="text-muted">Minggu ini</small>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row mt-4">
+
+    <!-- Grafik -->
+    <div class="col-lg-8">
+        <div class="card p-4 shadow-sm border rounded-2">
+            <div class="d-flex justify-content-between">
+                <h5 class="fw-bold">Statistik Kehadiran Ronda</h5>
+                <div>
+                    <a href="#" class="text-muted me-2">Mingguan</a>
+                    <a href="#" class="text-muted">Bulanan</a>
+                </div>
+            </div>
+
+            <div style="height:300px; position:relative;">
+                <canvas id="grafikKehadiran"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aksi Cepat -->
+    <div class="col-lg-4">
+        <div class="card p-4 shadow-sm border rounded-2">
+            <h5 class="fw-bold mb-3">Aksi Cepat</h5>
+
+            <div class="d-grid gap-3">
+                <a href="/admin/jadwal" class="btn btn-light border rounded-4 text-start py-3">
+                    📅 Kelola Jadwal Ronda
+                </a>
+                <a href="/admin/laporan" class="btn btn-light border rounded-4 text-start py-3">
+                    📝 Kelola Laporan Kejadian
+                </a>
+                <a href="/admin/manage" class="btn btn-light border rounded-4 text-start py-3">
+                    👥 Kelola Data Warga
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{-- Chart JS --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+   var labels = @json($labels);
+    var data = @json($data);
+
+    const ctx = document.getElementById('grafikKehadiran');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Persentase Kehadiran (%)',
+                data: data,
+                backgroundColor: 'rgba(75, 123, 124, 0.6)',
+                borderColor: 'rgba(75, 123, 124, 1)',
+                borderWidth: 1,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+
+</script>
+
 @endsection
