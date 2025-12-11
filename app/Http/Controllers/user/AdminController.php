@@ -107,8 +107,6 @@ class AdminController extends Controller
 
         return view('admin.main', $data);
     }
-
-
     public function laporan(Request $request)
     {
         $laporan = DB::table('reports')
@@ -176,7 +174,7 @@ class AdminController extends Controller
 
     public function manage(Request $request)
     {
-        $users = DB::table('users')->paginate(10);
+        $users = DB::table('users')->where('is_admin', '=', 0)->paginate(10);
         return view('admin.manage-warga',[
             'users' => $users
         ]);
@@ -292,7 +290,7 @@ class AdminController extends Controller
                 ->where('jadwals.is_aktif', 1)
                 ->select('users.id');
 
-        $users = DB::table('users')->whereNotIn('id', $absensiAktif)->get();
+        $users = DB::table('users')->where('is_admin', '=', 0)->whereNotIn('id', $absensiAktif)->get();
         $jadwals = DB::table('absensis')
                     ->join('jadwals', 'absensis.id_jadwal', '=', 'jadwals.id')
                     ->join('users', 'absensis.user_id', '=', 'users.id')

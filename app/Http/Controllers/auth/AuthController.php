@@ -95,7 +95,7 @@ class AuthController extends Controller
             }
             else{
                 $request->session()->put('is_admin', $is_admin);
-
+                return redirect('/admin');
             }
         }
         else{

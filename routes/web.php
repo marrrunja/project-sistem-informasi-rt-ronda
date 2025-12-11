@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainUiController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Middleware\OnlyUserMiddleware;
+use App\Http\Middleware\OnlyAdminMiddleware;
 use App\Http\Middleware\OnlyLoginMiddleware;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\user\AdminController;
@@ -47,7 +48,7 @@ Route::middleware([OnlyUserMiddleware::class, OnlyLoginMiddleware::class])->cont
 });
 
 
-Route::controller(AdminController::class)->group(function(){
+Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->controller(AdminController::class)->group(function(){
     Route::get('/admin', 'index');
     Route::get('/admin/laporan', 'laporan');
     Route::get('/admin/detail/laporan/{id}', 'detailLaporan');
@@ -63,8 +64,9 @@ Route::controller(AdminController::class)->group(function(){
 });
 
 
-Route::controller(AbsensiController::class)->group(function(){
+Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->controller(AbsensiController::class)->group(function(){
     Route::post('absensi/add/{id}', 'add')->name('absensi.add');
     Route::post('/absensi/hapus/{id}', 'hapus')->name('absensi.hapus');
     Route::post('/absensi/ubah', 'ubah');
+    Route::get('/absensi/cetak', 'cetakAbsensi');
 });

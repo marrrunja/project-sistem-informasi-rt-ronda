@@ -10,7 +10,7 @@ class OnlyAdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-         if($request->session()->get('is_admin') === false){
+        if($request->session()->get('is_admin') === false){
             return abort(403);
         }
         return $next($request);

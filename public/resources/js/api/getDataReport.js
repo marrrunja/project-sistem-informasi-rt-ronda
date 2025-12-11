@@ -1,4 +1,4 @@
-import { BASEURL } from "../utility/variabel.js";
+import { BASEURL, formatTanggalIndo } from "../utility/variabel.js";
 import { 
     getDataReport, getTotalDataFromReport, getDetailLaporan,getFotoFromReport
 } from "../utility/apiData.js";
@@ -48,7 +48,7 @@ async function getData(){
                                 </div>
                                 <div class="col-5 col-md-5 col-xl-2">
                                     <div class="d-flex flex-column">
-                                        <small>${data.created_at}</small>
+                                        <small>${formatTanggalIndo(data.created_at)}</small>
                                         <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">${data.status}</span>
                                     </div>
                                 </div>

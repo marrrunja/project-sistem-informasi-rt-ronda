@@ -7,7 +7,7 @@
 
 <div class="row mb-4">
     <div class="col-lg-12">
-        <h4 class="fw-bold">Selamat Datang Budi</h4>
+        <h4 class="fw-bold">Selamat Datang {{ Session::get('username') }}</h4>
         <p class="text-muted">Berikut adalah ringkasan status keamanan di lingkungan Anda</p>
     </div>
 </div>

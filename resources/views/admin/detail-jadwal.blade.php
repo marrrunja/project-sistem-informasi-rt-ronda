@@ -43,7 +43,7 @@
                         <div class="text-muted small">Waktu</div>
                         <div class="fw-semibold fs-5">19:00 – 06:00</div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-flex gap-2">
                     @php
                     $is_aktif = $jadwal->is_aktif === 1;  
                     $route = $is_aktif ? "jadwal.non_aktifkan":"jadwal.aktifkan";
@@ -54,6 +54,9 @@
                                 {{ $is_aktif ?'Nonaktifkan':'Aktifkan' }}
                             </button>
                         </form>
+                        <button class="btn btn-primary w-25">
+                            <a href="/absensi/cetak" class="text-decoration-none text-white">Cetak absensi</a>
+                        </button>
                     </div>
                 </div>
             </div>

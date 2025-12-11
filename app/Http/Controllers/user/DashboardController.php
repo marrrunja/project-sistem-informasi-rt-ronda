@@ -28,7 +28,9 @@ class DashboardController extends Controller
         $jumlahAbsenUser = DB::select('SELECT COUNT(status) AS total_absen_user FROM absensis WHERE status = 1 AND user_id = ?', [$user->id])[0]->total_absen_user;
 
         $jumlahLaporan = DB::select('SELECT COUNT(user_id) AS total_laporan FROM reports WHERE user_id = ?', [$user->id])[0]->total_laporan;
-
+        if($jumlahAbsenDB === 0){
+            $jumlahAbsenDB = 1;
+        }
         $persentasiAbsenUser = $jumlahAbsenUser / $jumlahAbsenDB * 100;
         $laporanUser = DB::table('reports')
                     ->join('kategoris', 'reports.kategori_id','=' ,'kategoris.id')
