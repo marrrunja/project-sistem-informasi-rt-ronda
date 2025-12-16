@@ -6,7 +6,7 @@ const cardBody = document.getElementById("body-profil");
 const btnUbah = document.getElementById("btn-ubah");
 btnUbah.style.cursor = "pointer";
 cardBody.style.transition = ".3s ease-in-out";
-
+const innerHTMLProfile = cardBody.innerHTML;
 async function showDetailUser(){
     try{
         const data = await getDetailUser(BASEURL, btnUbah.dataset.id);
@@ -35,7 +35,7 @@ async function ubahData(e)
         }
     }
     if(e.target.classList.contains("btn-batal")){
-        
+        cardBody.innerHTML = innerHTMLProfile;
     }
 }
 

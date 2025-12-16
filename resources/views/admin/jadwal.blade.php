@@ -3,9 +3,9 @@
 @section('title', "Jadwal")
 
 @section('body')
-<div class="row justify-content-between gy-4" id="container-jadwal">
+<div class="row justify-content-between pt-3 gy-4" id="container-jadwal">
     <div class="col-12 col-md-6">
-        <h1>Jadwal</h1>
+        <h2>Jadwal</h2>
     </div>
     <div class="col-12 col-md-6">
         <button type="button" class="btn btn-success btn-jadwal-add">
@@ -13,7 +13,7 @@
         </button>
     </div>
 </div>
-<div class="row g-2 mt-4">
+<div class="row g-2 mt-4 ">
     @foreach($jadwals as $jadwal)
         @php
         $is_aktif = $jadwal->is_aktif === 0;
@@ -33,6 +33,9 @@
             </div>
         </div>
     @endforeach
+    <div class="col-12">
+        {{$jadwals->links()}}
+    </div>
 </div>
 @endsection
 

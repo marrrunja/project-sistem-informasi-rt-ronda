@@ -5,11 +5,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_token" content="{{ csrf_token() }}">
-    <meta name="_baseurl" content="{{ env('BASE_URL') }}">
+    <!-- <meta name="_baseurl" content="{{ env('BASE_URL') }}"> -->
+    <meta name="_baseurl" content="{{ config('app.base_url') }}">
+    <meta name="description"
+        content="SIRATA adalah sistem terpadu yang meningkatkan keamanan masyarakat RT. Platform ini memanfaatkan teknologi untuk menciptakan lingkungan yang aman, terhubung, dan efisien bagi seluruh warga.">
+
+    <!-- Meta Keywords -->
+    <meta name="keywords"
+        content="SIRATA, sistem keamanan RT, aplikasi warga, lingkungan aman, teknologi keamanan, smart RT">
+
+    <!-- Meta Robots -->
+    <meta name="robots" content="index, follow">
     <title>@yield('title')</title>
 
     <link rel="shortcut icon" type="image/png" href="{{ asset('resources/assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('resources/assets/css/styles.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
+    <style>
+        .font-utama {
+            font-family: "Protest Guerrilla", sans-serif !important;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('styles')
 </head>
@@ -22,7 +38,7 @@
 
         <div class="body-wrapper">
 
-            <header class="app-header shadow-sm">
+            <header class="app-header shadow-sm sticky-top">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <ul class="navbar-nav">
                         <li class="nav-item d-block d-xl-none">
@@ -32,10 +48,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                                <i class="ti ti-bell-ringing"></i>
-                                <div class="notification bg-primary rounded-circle"></div>
-                            </a>
+                            <div class="mt-3 mt-md-3 mt-xl-0">
+                                <span class="font-utama" style="font-size:1.7rem;">SIRATA</span>
+                            </div>
                         </li>
                     </ul>
 
@@ -47,7 +62,6 @@
                                     <img src="{{ asset('resources/images/icon.jpeg') }}" alt="" width="40" height="40"
                                         class="rounded-circle p-2 border-primary" style="border:1.4px solid">
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">

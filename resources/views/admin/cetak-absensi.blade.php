@@ -37,7 +37,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 5px;
         }
 
         table th {
@@ -71,6 +71,21 @@
             font-size: 10px;
             color: #777;
         }
+        .mb-2 {
+            margin-bottom:10px;
+        }
+        .mb-1{
+            margin-bottom:2px;
+        }
+        .card{
+            padding-top:5px;
+            padding-bottom:15px;
+            padding-left:10px;
+            padding-right:10px;
+            margin-bottom:15px;
+            border:1px solid rgba(0, 0, 0, .3);
+            border-radius:5px;
+        }
     </style>
 </head>
 <body>
@@ -83,37 +98,46 @@
 <div class="info">
     <strong>Total Data:</strong> {{ count($absens) }} entri absensi  
 </div>
-<table>
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>Nama Warga</th>
-        <th>Tanggal Ronda</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @foreach ($absens as $i => $a)
-
-        @php
-            $isHadir = $a->status == 1;
-        @endphp
-
-        <tr class="{{ $isHadir ? 'row-hadir' : 'row-alpha' }}">
-            <td style="text-align: center; width: 40px;">{{ $i + 1 }}</td>
-            <td>{{ $a->nama_lengkap }}</td>
-            <td>{{ date('d-m-Y H:i', strtotime($a->jadwal_masuk)) }}</td>
-            <td style="text-align: center;">
-                {{ $isHadir ? 'Hadir' : 'Tidak Hadir' }}
-            </td>
+@foreach($absens as $absen)
+<div class="card">
+    <h4 class="mb-1">Jadwal  {{ \Carbon\Carbon::parse($absen->jadwal_masuk)->translatedFormat('j F Y') }}</h4>
+    @if(App\Models\Absensi::getAllDataByJadwalId($absen->id)->count() > 0)
+    <table>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Warga</th>
+            <th>Tanggal Ronda</th>
+            <th>Status</th>
         </tr>
+        </thead>
+        <tbody>
 
-    @endforeach
+        @foreach (App\Models\Absensi::getAllDataByJadwalId($absen->id) as $i => $a)
+    
+            @php
+                $isHadir = $a->status == 1;
+            @endphp
+    
+            <tr class="{{ $isHadir ? 'row-hadir' : 'row-alpha' }}">
+                <td style="text-align: center; width: 40px;">{{ $i + 1 }}</td>
+                <td>{{ $a->nama_lengkap }}</td>
+                <td>{{ date('d-m-Y H:i', strtotime($absen->jadwal_masuk)) }}</td>
+                <td style="text-align: center;">
+                    {{ $isHadir ? 'Hadir' : 'Tidak Hadir' }}
+                </td>
+            </tr>
+    
+        @endforeach
+    
+        </tbody>
+    </table>
+    @else
+    <strong align="center">Belum ada warga yang terdaftar di jadwal ini</strong>
+    @endif
+</div>
 
-    </tbody>
-</table>
-
+@endforeach
 <div class="footer">
    Dicetak pada: {{ \Carbon\Carbon::now('Asia/Jakarta')->format('d-m-Y H:i') }} WIB
 </div>

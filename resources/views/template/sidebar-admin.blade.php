@@ -19,7 +19,7 @@
                     <span class="hide-menu">Home</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is('admin')?'active':'' }}" href="/admin" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -30,16 +30,25 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">UI COMPONENTS</span>
                 </li> -->
+                @php
+                $array = explode('/',request());
+                $angka = (int)$array[4][0];
+                $isActiveLaporan = request()->is('admin/laporan')||request()->is('admin/detail/laporan/'.$angka) ? 'active':'';
+                $isActiveManage = request()->is('admin/manage') ? 'active':'';
+                $angkaJadwal = (int)$array[3][0];
+                $isActiveJadwal = request()->is('admin/jadwal') || request()->is('jadwal/detail/'.$angkaJadwal) ? 'active':'';
+                @endphp
+
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/laporan" aria-expanded="false">
-                        <span>
+                    <a class="sidebar-link {{ $isActiveLaporan }}" href="/admin/laporan" aria-expanded="false">
+                        <span> 
                             <i class="ti ti-article"></i>
                         </span>
                         <span class="hide-menu">Laporan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/manage" aria-expanded="false">
+                    <a class="sidebar-link {{ $isActiveManage }}" href="/admin/manage" aria-expanded="false">
                         <span>
                             <i class="ti ti-alert-circle"></i>
                         </span>
@@ -54,8 +63,9 @@
                         <span class="hide-menu">Card</span>
                     </a>
                 </li> -->
+             
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/jadwal" aria-expanded="false">
+                    <a class="sidebar-link {{ $isActiveJadwal }}" href="/admin/jadwal" aria-expanded="false">
                         <span>
                             <i class="ti ti-file-description"></i>
                         </span>

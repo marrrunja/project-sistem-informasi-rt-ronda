@@ -119,19 +119,23 @@ class AbsensiController extends Controller
     public function cetakAbsensi()
     {
         $bulanIni = Carbon::now()->format('Y-m');
-
-        // Ambil absensi berdasarkan bulan ini
-        $dataAbsensi = DB::table('absensis')
-            ->join('users', 'users.id', '=', 'absensis.user_id')
-            ->join('jadwals', 'jadwals.id', '=', 'absensis.id_jadwal')
-            ->select(
-                'users.nama_lengkap',
-                'jadwals.jadwal_masuk',
-                'absensis.status'
-            )
+        $jadwals = DB::table('jadwals')
             ->where(DB::raw("DATE_FORMAT(jadwals.jadwal_masuk, '%Y-%m')"), $bulanIni)
             ->orderBy('jadwals.jadwal_masuk', 'desc')
             ->get();
+
+        // Ambil absensi berdasarkan bulan ini
+        // $dataAbsensi = DB::table('absensis')
+        //     ->join('users', 'users.id', '=', 'absensis.user_id')
+        //     ->join('jadwals', 'jadwals.id', '=', 'absensis.id_jadwal')
+        //     ->select(
+        //         'users.nama_lengkap',
+        //         'jadwals.jadwal_masuk',
+        //         'absensis.status'
+        //     )
+        //     ->where(DB::raw("DATE_FORMAT(jadwals.jadwal_masuk, '%Y-%m')"), $bulanIni)
+        //     ->orderBy('jadwals.jadwal_masuk', 'desc')
+        //     ->get();
 
         // Generate MPDF
         $mpdf = new Mpdf([
@@ -139,7 +143,7 @@ class AbsensiController extends Controller
             'format' => 'A4'
         ]);
         $data = [
-            'absens' => $dataAbsensi
+            'absens' => $jadwals
         ];
         $mpdf->writeHTML(view('admin.cetak-absensi',$data));
         $mpdf->Output('Absensi warga bulan ini.pdf','I');

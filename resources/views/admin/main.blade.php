@@ -7,7 +7,7 @@
 
 <div class="row mb-4">
     <div class="col-lg-12">
-        <h4 class="fw-bold">Selamat Datang {{ Session::get('username') }}</h4>
+        <h4 class="fw-bold mt-3">Selamat Datang {{ Session::get('username') }}</h4>
         <p class="text-muted">Berikut adalah ringkasan status keamanan di lingkungan Anda</p>
     </div>
 </div>
@@ -62,7 +62,7 @@
                 <h5 class="fw-bold">Statistik Kehadiran Ronda</h5>
                 <div>
                     <a href="#" class="text-muted me-2">Mingguan</a>
-                    <a href="#" class="text-muted">Bulanan</a>
+                    <!-- <a href="#" class="text-muted">Bulanan</a> -->
                 </div>
             </div>
 

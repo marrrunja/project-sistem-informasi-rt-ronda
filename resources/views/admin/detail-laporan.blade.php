@@ -35,7 +35,7 @@
                 <div class="card py-2 px-2 border shadow-0">
                     <div class="card-body mt-0">
                         <h4 class="card-title mb-2">Bukti Foto</h4>
-                        <img src="{{ asset('storage/images-report/'.$report->foto) }}" width="400" class="border p-3">
+                        <img src="{{ asset('storage/images-report/'.$report->foto) }}"class="border p-3 img-fluid">
                     </div>
                 </div>
             </div>

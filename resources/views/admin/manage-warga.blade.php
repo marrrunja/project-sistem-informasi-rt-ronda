@@ -1,14 +1,14 @@
 @extends('template.template-admin')
 
 @section('body')
-<div class="row">
-    <h1>Mengatur status Akun warga</h1>
+<div class="row pt-3 pb-2">
+    <h3>Mengatur status Akun warga</h3>
     <p>Berikut adalah daftar akun warga yang telah terdaftar pada sistem</p>
 </div>
 <div class="row">
      <div class="col-12">
         <div class="card border shadow-0">
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <h4>Tabel Akun warga RT</h4>
                 <table class="table">
                     <thead>
@@ -37,6 +37,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$users->links()}}
             </div>
         </div>
     </div>

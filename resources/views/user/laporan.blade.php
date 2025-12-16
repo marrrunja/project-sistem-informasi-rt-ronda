@@ -61,9 +61,7 @@
                             <label for="deskripsi" class="form-label">Deskripsi Kejadian</label>
                             <textarea name="deskripsi" rows="5" id="deskripsi"
                                 placeholder="Jelaskan kejadian secara rinci.."
-                                class="form-control @error('deskripsi') is-invalid @enderror">
-                                {{ old('deskripsi') ?? '' }}
-                            </textarea>
+                                class="form-control @error('deskripsi') is-invalid @enderror">{{old('deskripsi')??''}}</textarea>
                             @error('deskripsi')
                             <span class="error invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

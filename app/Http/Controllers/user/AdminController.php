@@ -29,20 +29,22 @@ class AdminController extends Controller
         // ============================================
         // 2. PERSENTASE KEHADIRAN MINGGU INI
         // ============================================
+        $formatWaktu = 'Asia/Jakarta';
+        $startOfWeek = now($formatWaktu)->startOfWeek(); // Senin
+        $endOfWeek   = now($formatWaktu)->endOfWeek();   // Minggu
 
-        $startOfWeek = now()->startOfWeek(); // Senin
-        $endOfWeek   = now()->endOfWeek();   // Minggu
+        // dump($startOfWeek);
+        // dd($endOfWeek);
+
 
         // Ambil semua jadwal minggu ini
         $jadwalMingguanIds = DB::table('jadwals')
             ->where('is_aktif', 1) // hanya yang aktif
             ->whereBetween('jadwal_masuk', [$startOfWeek, $endOfWeek])
             ->pluck('id');
-
         if ($jadwalMingguanIds->isEmpty()) {
             $persentaseKehadiran = 0;
         } else {
-
             $totalAbsensi = DB::table('absensis')
                 ->whereIn('id_jadwal', $jadwalMingguanIds)
                 ->count();
@@ -82,9 +84,13 @@ class AdminController extends Controller
                 ->where('id_jadwal', $jadwal->id)
                 ->where('status', 1)
                 ->count();
+            $jumlahWargaDalamAbsensi = DB::table('absensis')
+                            ->where('id_jadwal', '=', $jadwal->id)
+                            ->get()
+                            ->count();
 
-            $persentase = $totalWarga > 0
-                ? round(($hadir / $totalWarga) * 100)
+            $persentase = $jumlahWargaDalamAbsensi > 0
+                ? round(($hadir / $jumlahWargaDalamAbsensi) * 100)
                 : 0;
 
             $labels[] = \Carbon\Carbon::parse($jadwal->jadwal_masuk)->format('d M');
@@ -114,7 +120,7 @@ class AdminController extends Controller
                     ->join('users', 'reports.user_id', '=' ,'users.id')
                     ->select("users.nama_lengkap", "reports.*", 'kategoris.kategori')
                     ->orderBy('reports.id', 'desc')
-                    ->paginate(3);
+                    ->paginate(10);
         $data = [
             'reports' => $laporan
         ];
@@ -174,7 +180,7 @@ class AdminController extends Controller
 
     public function manage(Request $request)
     {
-        $users = DB::table('users')->where('is_admin', '=', 0)->paginate(10);
+        $users = DB::table('users')->where('is_admin', '=', 0)->paginate(15);
         return view('admin.manage-warga',[
             'users' => $users
         ]);
@@ -238,7 +244,7 @@ class AdminController extends Controller
             )
             ->orderBy('jadwals.is_aktif', 'desc')
             ->orderBy('jadwals.id', 'desc')
-            ->get();
+            ->paginate(9);
         return view('admin.jadwal', [
             'jadwals' => $jadwals
         ]);
@@ -290,7 +296,7 @@ class AdminController extends Controller
                 ->where('jadwals.is_aktif', 1)
                 ->select('users.id');
 
-        $users = DB::table('users')->where('is_admin', '=', 0)->whereNotIn('id', $absensiAktif)->get();
+        $users = DB::table('users')->where('is_admin', '=', 0)->where('status', '=', 1)->whereNotIn('id', $absensiAktif)->get();
         $jadwals = DB::table('absensis')
                     ->join('jadwals', 'absensis.id_jadwal', '=', 'jadwals.id')
                     ->join('users', 'absensis.user_id', '=', 'users.id')

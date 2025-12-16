@@ -64,9 +64,9 @@ Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->contr
 });
 
 
-Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->controller(AbsensiController::class)->group(function(){
-    Route::post('absensi/add/{id}', 'add')->name('absensi.add');
-    Route::post('/absensi/hapus/{id}', 'hapus')->name('absensi.hapus');
+Route::middleware(OnlyLoginMiddleware::class)->controller(AbsensiController::class)->group(function(){
+    Route::post('absensi/add/{id}', 'add')->name('absensi.add')->middleware(OnlyAdminMiddleware::class);
+    Route::post('/absensi/hapus/{id}', 'hapus')->name('absensi.hapus')->middleware(OnlyAdminMiddleware::class);
     Route::post('/absensi/ubah', 'ubah');
-    Route::get('/absensi/cetak', 'cetakAbsensi');
+    Route::get('/absensi/cetak', 'cetakAbsensi')->middleware(OnlyAdminMiddleware::class);
 });

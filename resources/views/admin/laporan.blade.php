@@ -1,9 +1,9 @@
 @extends('template.template-admin')
 
 @section('body')
-<div class="row">
+<div class="row pt-3 pb-2">
     <div class="col">
-        <h1>Laporan kejadian</h1>
+        <h3>Laporan kejadian</h3>
         <p>Kelola dan tinjau semua laporan yang masuk dari warga.</p>
     </div>
 </div>
@@ -11,14 +11,13 @@
     <div class="col">
         <div class="row gy-2">
             <div class="col-12 col-md-8 col-xl-7">
-                <form action="">
+                <!-- <form action="">
                     <input type="search" class="form-control" placeholder="Cari laporan (pelapor, status...)">
-                </form>
+                </form> -->
 
             </div>
             <div class="col-12">
-
-                <div class="card border-0 shadow px-2">
+                <div class="card border shadow-sm px-2 table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
@@ -37,15 +36,15 @@
                             @endphp
                             @foreach($reports as $report)
                             @switch($report->status)
-                                @case('Diajukan')
+                                @case('diajukan')
                                     @php $color = 'primary'; @endphp
                                     @break
 
-                                @case('Ditinjau')
+                                @case('ditinjau')
                                     @php $color = 'warning'; @endphp
                                     @break
 
-                                @case('Selesai')
+                                @case('selesai')
                                     @php $color = 'success'; @endphp
                                     @break
 

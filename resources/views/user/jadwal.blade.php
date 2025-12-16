@@ -31,7 +31,7 @@
         <div class="row justify-content-center gap-3">
             @foreach($jadwals as $jadwal)
             <div class="col-12 col-md-10">
-                <div class="card border-0 shadow-sm px-4 py-3">
+                <div class="card border-0 shadow-sm px-0 px-md-4 py-3">
                     <div class="card-header bg-transparent py-3">
                         <div class="row">
                             <div class="col-4 col-md-4 col-xl-2">
@@ -60,7 +60,7 @@
 
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive-md">
+                        <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr class="table-secondary py-3">

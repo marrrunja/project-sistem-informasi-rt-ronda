@@ -1,16 +1,16 @@
 @if ($paginator->hasPages())
     <style>
          .pagination .page-item.active .page-link {
-            background-color:#355E52!important;
-            border-color: #355e52 !important;
+            background-color:#5d87ff!important;
+            border-color: #5d87ff !important;
             color: white !important;
         }
         .pagination .page-item a.page-link {
-            color: #355E52;
+            color: #5d87ff;
         }
         .pagination .page-item a.page-link:hover {
-            background-color: #355E52;
-            border-color:#355e52;
+            background-color: #5d87ff;
+            border-color:#5d87ff;
             color: white;
         }
         .pagination .page-item.disabled .page-link {

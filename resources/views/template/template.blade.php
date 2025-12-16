@@ -5,7 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_token" content="{{ csrf_token() }}">
-    <meta name="_baseurl" content = "{{ env('BASE_URL') }}">
+    <!-- <meta name="_baseurl" content="{{ env('BASE_URL') }}"> -->
+    <meta name="_baseurl" content="{{ config('app.base_url') }}">
+    <meta name="description"
+        content="SIRATA adalah sistem terpadu yang meningkatkan keamanan masyarakat RT. Platform ini memanfaatkan teknologi untuk menciptakan lingkungan yang aman, terhubung, dan efisien bagi seluruh warga.">
+
+    <!-- Meta Keywords -->
+    <meta name="keywords"
+        content="SIRATA, sistem keamanan RT, aplikasi warga, lingkungan aman, teknologi keamanan, smart RT">
+
+    <!-- Meta Robots -->
+    <meta name="robots" content="index, follow">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -27,7 +37,7 @@
     <script type="module" src="{{ asset('resources/js/utility/variabel.js') }}"></script>
     <script type="module" src="{{ asset('resources/js/logout.js') }}"></script>
     <script type="module" src="{{ asset('resources/js/message.js') }}">
-        </script>
+    </script>
     <script type="module" src="{{ asset('resources/js/utility/apiData.js') }}"></script>
     @stack('scripts')
 </body>
