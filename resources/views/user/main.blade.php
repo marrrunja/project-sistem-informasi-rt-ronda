@@ -43,7 +43,7 @@
                                         class="col-12 col-md-12 ms-0 col-xl-9 text-center text-md-center text-xl-start">
                                         <h3 class="fw-semibold">{{$user->nama_lengkap}}</h3>
                                         <div class="fw-light">{{$user->alamat ?? '-'}}</div>
-                                        <div class="fw-semibold color-utama">{{$user->status == 1 ? 'Anggota Ronda Aktif': 'Anggota Tidak Aktif'}}</div>
+                                        <div class="fw-semibold color-utama">{{$user->status == true ? 'Anggota Ronda Aktif': 'Anggota Tidak Aktif'}}</div>
                                     </div>
                                 </div>
                             </div>

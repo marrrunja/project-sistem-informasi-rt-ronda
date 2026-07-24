@@ -32,11 +32,11 @@
                 </li> -->
                 @php
                 $array = explode('/',request());
-                $angka = (int)$array[4][0];
+                $angka = (int)explode(" ",$array[4])[0];
+                
                 $isActiveLaporan = request()->is('admin/laporan')||request()->is('admin/detail/laporan/'.$angka) ? 'active':'';
-                $isActiveManage = request()->is('admin/manage') ? 'active':'';
-                $angkaJadwal = (int)$array[3][0];
-                $isActiveJadwal = request()->is('admin/jadwal') || request()->is('jadwal/detail/'.$angkaJadwal) ? 'active':'';
+                $isActiveManage = request()->is('admin/manage') || request()->is("admin/manage/detail/$angka")  ? 'active':'';
+                $isActiveJadwal = request()->is('admin/jadwal') || request()->is('admin/jadwal/detail/'.$angka) ? 'active':'';
                 @endphp
 
                 <li class="sidebar-item">

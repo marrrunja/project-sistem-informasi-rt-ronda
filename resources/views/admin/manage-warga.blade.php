@@ -28,10 +28,13 @@
                             <td>{{ $user->nama_lengkap }}</td>
                             <td>{{ $user->alamat ?? '-' }}</td>
                             <td>{{ $isActive ? 'Aktif' : 'Tidak aktif' }}</td>
-                            <td>
+                            <td class="d-flex gap-2">
                                 <button data-id="{{ $user->id }}" data-status="{{ $user->status }}" type="button" class="btn btn-blokir btn-outline-{{ $isActive ? 'danger':'primary'  }}">
                                     {{ $isActive ? 'Nonaktifkan': 'Aktifkan' }}
                                 </button>
+                                
+                                    <a href="/admin/manage/detail/{{ $user->id }}" class="text-decoration-none btn btn-primary">Detail</a>
+                                
                             </td>
                         </tr>
                         @endforeach

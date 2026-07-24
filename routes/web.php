@@ -48,7 +48,7 @@ Route::middleware([OnlyUserMiddleware::class, OnlyLoginMiddleware::class])->cont
 });
 
 
-Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->controller(AdminController::class)->group(function(){
+Route::middleware([OnlyAdminMiddleware::class, OnlyLoginMiddleware::class])->controller(AdminController::class)->group(function(){
     Route::get('/admin', 'index');
     Route::get('/admin/laporan', 'laporan');
     Route::get('/admin/detail/laporan/{id}', 'detailLaporan');
@@ -58,15 +58,19 @@ Route::middleware(OnlyAdminMiddleware::class, OnlyLoginMiddleware::class)->contr
     Route::post('/admin/bukablokir', 'bukaBlokir');
     Route::get('/admin/jadwal', 'jadwal');
     Route::post('/admin/add/jadwal', 'makeJadwal');
-    Route::get('/jadwal/detail/{id}', 'detailJadwal');
+    Route::get('/admin/jadwal/detail/{id}', 'detailJadwal');
     Route::post('/jadwal/nonaktif/{id}', 'nonaktif')->name('jadwal.non_aktifkan');
     Route::post('/jadwal/aktifkan/{id}', 'aktifkan')->name('jadwal.aktifkan');
+
+    Route::get("/admin/manage/detail/{id}", 'getDetailWarga');
 });
 
 
 Route::middleware(OnlyLoginMiddleware::class)->controller(AbsensiController::class)->group(function(){
-    Route::post('absensi/add/{id}', 'add')->name('absensi.add')->middleware(OnlyAdminMiddleware::class);
+    Route::post('absensi/add', 'add')->name('absensi.add')->middleware(OnlyAdminMiddleware::class);
     Route::post('/absensi/hapus/{id}', 'hapus')->name('absensi.hapus')->middleware(OnlyAdminMiddleware::class);
     Route::post('/absensi/ubah', 'ubah');
     Route::get('/absensi/cetak', 'cetakAbsensi')->middleware(OnlyAdminMiddleware::class);
+    Route::get("/absensi/anggota", 'searchAnggota')->middleware(OnlyAdminMiddleware::class);
+    Route::delete("absensi/delete/users", 'deleteUsers')->middleware(OnlyAdminMiddleware::class);
 });

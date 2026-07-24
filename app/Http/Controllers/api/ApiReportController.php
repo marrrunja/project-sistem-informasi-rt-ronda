@@ -47,8 +47,13 @@ class ApiReportController extends Controller
                     ->select("users.nama_lengkap", "reports.*", 'kategoris.kategori')
                     ->where('reports.id', '=', $id)
                     ->first();
+
+        $reportHistories = DB::table("history_reports")
+                    ->where("report_id", $id)
+                    ->get();
         $data = [
-            'report' => $report
+            'report' => $report,
+            'reportHistories' => $reportHistories,
         ];
         return view('partial.detail-laporan', $data)->render();
     }

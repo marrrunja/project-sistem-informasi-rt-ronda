@@ -1,6 +1,6 @@
 @extends('template.template')
 
-@section('title', 'Dashboard')
+@section('title', 'Laporan')
 
 @push('styles')
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,79 +31,6 @@
 <section id="laporan-all" class="pt-2 pb-4">
     <div class="container">
         <div class="row gy-3" id="laporan-container">
-            <!-- <div class="col-12 col-md-10">
-                <div class="card py-2 px-3 border-0">
-                    <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-12 col-md-12 col-xl-10">
-                                <div class="d-flex flex-column">
-                                    <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <a href="#" rel="noopener noreferrer"
-                                            class="text-decoration-none text-dark">Aktivitas Mencurigakan</a>
-                                    </h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
-                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
-                                </div>
-                            </div>
-                            <div class="col-5 col-md-5 col-xl-2">
-                                <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-12 col-md-10">
-                <div class="card py-2 px-3 border-0">
-                    <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-12 col-md-12 col-xl-10">
-                                <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
-                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
-                                </div>
-
-                            </div>
-                            <div class="col-5 col-md-5 col-xl-2">
-                                <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">Diajukan</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-10">
-                <div class="card py-2 px-3 border-0">
-                    <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-12 col-md-12 col-xl-10">
-                                <div class="d-flex flex-column">
-                                    <h5 class="card-title">Aktivitas Mencurigakan</h5>
-                                    <div class="mb-2">Terlihat ada orang tidak dikenal berkeliling komplek pada malam
-                                        hari, sekitar pukul 01.30 WIB di dekat Blok C.</div>
-                                    <small>Dilaporkan oleh Dina Putri </small>
-                                </div>
-                            </div>
-                            <div class="col-5 col-md-5 col-xl-2">
-                                <div class="d-flex flex-column">
-                                    <small>4 November 2025</small>
-                                    <span class="badge text-bg-warning w-sm-25 w-md-25 w-lg-25 mt-2">Ditinjau</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div> -->
-
         </div>
     </div>
 </section>
@@ -155,7 +82,7 @@
 
 <div class="modal fade" id="modalFoto" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
     aria-labelledby="modalFoto" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-close"

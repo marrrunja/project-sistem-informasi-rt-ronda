@@ -1,7 +1,6 @@
 import { showAlertError, showAlertSuccess, showMessage } from "./utility/alert.js";
 import { getDetailUser, editData } from "./utility/apiData.js";
 import { BASEURL, TOKEN } from "./utility/variabel.js";
-
 const cardBody = document.getElementById("body-profil");
 const btnUbah = document.getElementById("btn-ubah");
 btnUbah.style.cursor = "pointer";

@@ -1,6 +1,6 @@
 @extends('template.template')
 
-@section('title', 'Dashboard')
+@section('title', 'Jadwal Ronda')
 
 @push('styles')
 <link rel="preconnect" href="https://fonts.googleapis.com">

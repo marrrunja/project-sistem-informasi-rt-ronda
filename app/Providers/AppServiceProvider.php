@@ -16,11 +16,14 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+    
+
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        config(['app.locale' => 'id']);
         Carbon::setLocale('id');
         Paginator::useBootstrapFour();
     }

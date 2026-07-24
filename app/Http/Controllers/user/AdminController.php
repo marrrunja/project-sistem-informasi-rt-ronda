@@ -8,6 +8,8 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {
@@ -29,22 +31,27 @@ class AdminController extends Controller
         // ============================================
         // 2. PERSENTASE KEHADIRAN MINGGU INI
         // ============================================
+
         $formatWaktu = 'Asia/Jakarta';
-        $startOfWeek = now($formatWaktu)->startOfWeek(); // Senin
-        $endOfWeek   = now($formatWaktu)->endOfWeek();   // Minggu
+
+        $startOfWeek = now($formatWaktu)->startOfWeek();
+        $endOfWeek   = now($formatWaktu)->endOfWeek();
 
         // dump($startOfWeek);
         // dd($endOfWeek);
 
-
         // Ambil semua jadwal minggu ini
         $jadwalMingguanIds = DB::table('jadwals')
-            ->where('is_aktif', 1) // hanya yang aktif
+            ->where('is_aktif', 1)
             ->whereBetween('jadwal_masuk', [$startOfWeek, $endOfWeek])
             ->pluck('id');
+
         if ($jadwalMingguanIds->isEmpty()) {
+
             $persentaseKehadiran = 0;
+
         } else {
+
             $totalAbsensi = DB::table('absensis')
                 ->whereIn('id_jadwal', $jadwalMingguanIds)
                 ->count();
@@ -61,58 +68,106 @@ class AdminController extends Controller
 
 
         // ============================================
-        // 3. GRAFIK — BERDASARKAN 7 JADWAL AKTIF TERAKHIR
+        // 3. GRAFIK (7 JADWAL AKTIF TERAKHIR)
         // ============================================
 
         $jadwals = DB::table('jadwals')
-            ->where('is_aktif', 1) // hanya jadwal aktif
+            ->where('is_aktif', 1)
             ->orderBy('jadwal_masuk', 'desc')
             ->take(7)
             ->get();
 
-        // TOTAL JADWAL HANYA YANG AKTIF
+        // Total jadwal aktif
         $totalJadwal = DB::table('jadwals')
             ->where('is_aktif', 1)
             ->count();
 
         $labels = [];
-        $data = [];
+        $dataHadir = [];
+        $dataIzin = [];
+        $dataBelumAbsen = [];
 
         foreach ($jadwals as $jadwal) {
 
+            // Jumlah peserta pada jadwal tersebut
+            $jumlahPeserta = DB::table('absensis')
+                ->where('id_jadwal', $jadwal->id)
+                ->count();
+
+            // Jumlah hadir
             $hadir = DB::table('absensis')
                 ->where('id_jadwal', $jadwal->id)
+                ->where("clear_absen", 1)
                 ->where('status', 1)
                 ->count();
-            $jumlahWargaDalamAbsensi = DB::table('absensis')
-                            ->where('id_jadwal', '=', $jadwal->id)
-                            ->get()
-                            ->count();
 
-            $persentase = $jumlahWargaDalamAbsensi > 0
-                ? round(($hadir / $jumlahWargaDalamAbsensi) * 100)
+            // Jumlah izin
+            $izin = DB::table('absensis')
+                ->where('id_jadwal', $jadwal->id)
+                ->where("clear_absen", 1)
+                ->where('status', 0)
+                ->count();
+
+             // Belum Absen
+            $belumAbsen = DB::table('absensis')
+                ->where('id_jadwal', $jadwal->id)
+                ->where('clear_absen', 0)
+                ->count();
+
+
+            // Persentase hadir
+            $persentaseHadir = $jumlahPeserta > 0
+                ? round(($hadir / $jumlahPeserta) * 100)
                 : 0;
 
-            $labels[] = \Carbon\Carbon::parse($jadwal->jadwal_masuk)->format('d M');
-            $data[] = $persentase;
+            // Persentase izin
+            $persentaseIzin = $jumlahPeserta > 0
+                ? round(($izin / $jumlahPeserta) * 100)
+                : 0;
+            $persentaseBelumAbsen = $jumlahPeserta > 0 ? round(($belumAbsen / $jumlahPeserta) * 100) : 0;
+
+            $labels[] = Carbon::parse($jadwal->jadwal_masuk)->format('d M');
+
+            $dataHadir[] = $persentaseHadir;
+            $dataIzin[] = $persentaseIzin;
+            $dataBelumAbsen[] = $persentaseBelumAbsen;
         }
 
 
+
+        // statistik Laporan
+        $totalLaporan = DB::table("reports")->count();
+        $idCategory = DB::table("kategoris")->pluck("id", )->toArray();
+        $reportsPerCategories = DB::table("reports AS r")
+                                ->leftJoin("kategoris AS k", "r.kategori_id", "k.id")
+                                ->whereIn("r.kategori_id", $idCategory)
+                                ->selectRaw('k.kategori, COUNT(*) as count_kategori')
+                                ->groupBy("k.id", "k.kategori")
+                                ->get();
+        
+        $labelCategories = $reportsPerCategories->pluck("kategori");
+        $dataCategories = $reportsPerCategories->pluck("count_kategori");
+
+
         // ============================================
-        // 4. DATA DIKIRIM KE VIEW
+        // 4. KIRIM KE VIEW
         // ============================================
 
-        $data = [
+        return view('admin.main', [
             'labels' => $labels,
-            'data' => $data,
+            'dataHadir' => $dataHadir,
+            'dataIzin' => $dataIzin,
+            'total' => $totalJadwal,
+            'dataBelumAbsen' => $dataBelumAbsen,
             'total_warga' => $totalWarga,
-            'total_jadwal' => $totalJadwal,
+            'total_jadwal' => $jadwalMingguanIds->count(),
             'persentase_kehadiran' => $persentaseKehadiran,
-            'total_laporan' => $totalLaporan
-        ];
-
-        return view('admin.main', $data);
+            'total_laporan' => $totalLaporan,
+            "labelCategories" => $labelCategories,
+            "dataCategories" => $dataCategories,
+        ]);
     }
+
     public function laporan(Request $request)
     {
         $laporan = DB::table('reports')
@@ -156,25 +211,60 @@ class AdminController extends Controller
                 'icon' => 'error',
             ]);
         }
-        
-        $update = DB::table('reports')->where('id', '=', $id)->update([
-            'status' => $status
-        ]
-        );
+        DB::beginTransaction();
+        try {
+            $update = DB::table('reports')->where('id', '=', $id)->update([
+                    'status' => strtolower($status)
+                ]
+            );
+            if($status == "Selesai"){
+                DB::table("history_reports")->insert([
+                   "report_id" => $id,
+                   "title" => "Laporan selesai",
+                   "description" => "Laporan telah selesai diproses. Terima kasih atas partisipasi Anda dalam membantu menjaga lingkungan.",
+                   "tanggal_aksi" => Carbon::now()->toDateString(),
+                   "created_at" => Carbon::now(),
+                   "updated_at" => Carbon::now(),
+               ]);
+            } else if($status == "Ditinjau"){
+                DB::table("history_reports")->insert([
+                   "report_id" => $id,
+                   "title" => "Laporan sedang ditinjau",
+                   "description" => "Laporan sedang diproses dan ditinjau oleh Ketua RT. Mohon menunggu hingga proses peninjauan selesai.",
+                   "tanggal_aksi" => Carbon::now()->toDateString(),
+                   "created_at" => Carbon::now(),
+                   "updated_at" => Carbon::now(),
+               ]);
+            }
+            $message = "";
+            $statusUpdate = "";
+            $icon = "";
 
-        if($update > 0 ){
+            if($update > 0){
+                $message = "Berhasil mengupdate status laporan";
+                $statusUpdate = "Berhasil diubah";
+                $icon = "success";
+            } else{
+                $message = "Belum ada yang di update";
+                $statusUpdate = "Tidak ada yang diubah";
+                $icon = "info";
+                DB::rollBack();
+            }
+
+            DB::commit();
             return redirect()->back()->with([
-                'status' => 'Berhasil diubah',
-                'message' => 'Berhasil mengupdate status laporan',
-                'icon' => 'success',
+                'status' => $statusUpdate,
+                'message' => $message,
+                'icon' => $icon,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                'status' => 'Terjadi kesalahan',
+                'message' => 'Gagal mengupdate laporan',
+                'icon' => 'info'
             ]);
         }
-     
-        return redirect()->back()->with([
-            'status' => 'Tidak ada yang diubah',
-            'message' => 'Belum ada yang di update',
-            'icon' => 'info'
-        ]);
         
     }
 
@@ -301,7 +391,7 @@ class AdminController extends Controller
                     ->join('jadwals', 'absensis.id_jadwal', '=', 'jadwals.id')
                     ->join('users', 'absensis.user_id', '=', 'users.id')
                     ->where('absensis.id_jadwal', '=', $id)
-                    ->select('absensis.id', 'absensis.status', 'users.nama_lengkap')
+                    ->select('absensis.id', 'absensis.status', 'users.nama_lengkap', 'absensis.clear_absen')
                     ->get();
         $data = [
             'jadwal_id' => $id,
@@ -346,14 +436,16 @@ class AdminController extends Controller
         $jadwal = DB::table('jadwals')->where('id', $id);
         $tanggal_jadwal = Carbon::parse($jadwal->first()->jadwal_masuk);
        
-        if($jadwal->first()->is_aktif === 1){
+        if($jadwal->first()->is_aktif == 1){
             return redirect()->back()->with([
                 'status' => 'Gagal',
                 'message' => 'Jadwal Sudah di aktifkan!',
                 'icon' => 'error'
             ]);
        }
-       if($tanggal_jadwal->isPast()){
+
+      
+       if($tanggal_jadwal->isPast() && !$tanggal_jadwal->isCurrentDay()){
         return redirect()->back()->with([
             'status' => 'Gagal',
             'message' => 'Jadwal tidak bisa diaktifkan karena sudah berlalu!!',
@@ -375,6 +467,66 @@ class AdminController extends Controller
             'message' => 'Terdapat kesalahan',
             'icon' => 'error'
         ]);
+    }
+
+    public function getDetailWarga(Request $request):View
+    {
+        $user = User::where("id", $request->id)->where("is_admin", 0)->first();
+        $statistikUser = [];
+
+        $totalJadwal = DB::table("absensis")->where("user_id", $user->id)->count();
+        $totalLaporan = DB::table("reports")->where("user_id", $user->id)->count();
+        $totalHadir = DB::table("absensis")
+                        ->where("user_id", $user->id)
+                        ->where("clear_absen", 1)
+                        ->where("status", 1)
+                        ->count();
+        $totalIzin = DB::table("absensis")
+                        ->where("user_id", $user->id)
+                        ->where("clear_absen", 1)
+                        ->where("status", 0)
+                        ->count();
+        $totalBelumAbsen = DB::table("absensis")
+                        ->where("user_id", $user->id)
+                        ->where("clear_absen", 0)
+                        ->count();
+        $riwayatKehadiran = DB::table("absensis AS a")
+                            ->join("jadwals AS j", "a.id_jadwal", "j.id")
+                            ->join("users AS u", "a.user_id", "u.id")
+                            ->where("u.id", $user->id)
+                            ->orderBy("j.jadwal_masuk", "DESC")
+                            ->select("j.jadwal_masuk", "a.status", "a.clear_absen")
+                            ->get();
+        $riwayatLaporan = DB::table("reports AS r")
+                        ->join("kategoris AS k", "r.kategori_id", "k.id")
+                        ->where("r.user_id", $user->id)
+                        ->orderBy("r.created_at", "DESC")
+                        ->select("k.kategori", "r.created_at", "r.id", "r.status")
+                        ->get();
+
+        $persentaseHadir = $totalHadir > 0 ? round(($totalHadir/$totalJadwal) * 100, 2) : 0;
+        $persentaseIzin = $totalIzin > 0 ? round(($totalIzin/$totalJadwal) * 100, 2) : 0;
+        $persentaseBelumAbsen = $totalBelumAbsen > 0 ? round(($totalBelumAbsen/$totalJadwal) * 100, 2) : 0;
+
+
+        $statistikUser["total_laporan"] = $totalLaporan;
+        $statistikUser["total_jadwal"] = $totalJadwal;
+        $statistikUser["total_hadir"] = $totalHadir;
+        $statistikUser["total_izin"] = $totalIzin;
+        $statistikUser["total_belum_absen"] = $totalBelumAbsen;
+        $statistikUser["persentase_hadir"] = $persentaseHadir;
+        $statistikUser["persentase_izin"] = $persentaseIzin;
+        $statistikUser["persentase_belum_absen"] = $persentaseBelumAbsen;
+
+
+        $data = [
+            "user" => $user,
+            "statistikUser" => $statistikUser,
+            "riwayatKehadiran" => $riwayatKehadiran,
+            "riwayatLaporan" => $riwayatLaporan,
+        ];
+
+        return view("admin.detail-warga", $data);
     }
 
 

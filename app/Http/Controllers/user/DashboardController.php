@@ -23,6 +23,8 @@ class DashboardController extends Controller
                     ->select('absensis.id as id_absen','jadwals.jadwal_masuk','absensis.clear_absen', 'jadwals.id as id_jadwal')
                     ->first();
 
+        
+
         $jumlahAbsenDB = DB::select('SELECT COUNT(user_id) AS total_absen FROM absensis WHERE user_id = ?', [$user->id])[0]->total_absen;
 
         $jumlahAbsenUser = DB::select('SELECT COUNT(status) AS total_absen_user FROM absensis WHERE status = 1 AND user_id = ?', [$user->id])[0]->total_absen_user;
@@ -96,17 +98,17 @@ class DashboardController extends Controller
                 'icon' => 'error'
             ]);
         }
-        if(strlen($data['nama']) > 12){
+        if(strlen($data['nama']) > 20){
               return response()->json([
                 'status' => 'Gagal',
-                'message' => 'Nama tidak boleh melebihi 12 karakter',
+                'message' => 'Nama tidak boleh melebihi 20 karakter',
                 'icon' => 'error'
             ]);
         }
         $update = DB::table('users')->where('id', '=', $request->id)->update([
             'nama_lengkap' => $data['nama'],
-            'alamat' => $data['alamat'] === '-' ? null : $data['alamat'],
-            'no_wa' => $data['wa'] === '-' ? null : $data['wa']
+            'alamat' => $data['alamat'] === '-' || $data['alamat'] == '' ? null : $data['alamat'],
+            'no_wa' => $data['wa'] === '-' || $data['alamat'] == '' ? null : $data['wa']
         ]);
 
         if($update > 0){
@@ -121,7 +123,5 @@ class DashboardController extends Controller
             'message' => 'Tidak ada data yang diubah',
             'icon' => 'info'
         ]);
-
-
     }
 }

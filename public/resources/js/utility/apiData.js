@@ -27,6 +27,7 @@ export async function getDetailLaporan(url, id){
     return data;
 }
 
+
 export async function getFotoFromReport(url, id){
     const response = await fetch(url + "/report/foto?id=" + id);
     if(!response.ok){
@@ -136,6 +137,55 @@ export async function ubahAbsensi(url, token, status, id){
         body:JSON.stringify({
             status:status,
             id:id
+        })
+    });
+
+   if (!response.ok) {
+       throw new Error("ERROR " + response.status);
+    }
+    let success = await response.json();
+    return success;
+}
+
+export async function searchDataUser(url, username, ids){
+    const response = await fetch(url + "/absensi/anggota?username=" + username+"&ids="+encodeURIComponent(JSON.stringify(ids)));
+    if(!response.ok){
+        throw new Error("ERROR " + response.status);
+    }
+    const data = await response.text();
+    return data;
+}
+
+
+export async function tambahAnggotaJadwal(url, token, id,users){
+    const response = await fetch(url + "/absensi/add", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            'X-CSRF-TOKEN': token
+        },
+        body:JSON.stringify({
+            id:id,
+            users:users,
+        })
+    });
+
+   if (!response.ok) {
+       throw new Error("ERROR " + response.status);
+    }
+    let success = await response.json();
+    return success;
+}
+
+export async function deleteUsersFromJadwal(url, token, idsAbsensi){
+    const response = await fetch(url + "/absensi/delete/users", {
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json",
+            'X-CSRF-TOKEN': token
+        },
+        body:JSON.stringify({
+            idsAbsensi:idsAbsensi,
         })
     });
 

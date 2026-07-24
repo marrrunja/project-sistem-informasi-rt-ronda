@@ -17,12 +17,14 @@
 
             <div class="mb-2">Riwayat Pengajuan</div>
             <ul>
-                <li>
-                    <div class="text-dark">Laporan diajukan</div>
-                    <div class="text-body-secondary">
-                        Laporan telah berhasil dikirim dan menunggu verifikasi ketua RT
-                    </div>
-                </li>
+                @foreach ($reportHistories as $item)
+                    <li class="py-2">
+                        <div class="text-dark">{{$item->title}} ({{ formatTanggalIndonesia($item->tanggal_aksi) }})</div>
+                        <div class="text-body-secondary">
+                            {{$item->description}}
+                        </div>
+                    </li>    
+                @endforeach
             </ul>
         </div>
     </div>

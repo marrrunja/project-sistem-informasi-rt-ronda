@@ -15,6 +15,7 @@
 
 </script>
 @endif
+
 <div class="row mb-4">
     <div class="col-12">
         <h3>
@@ -69,66 +70,90 @@
         <div class="card border shadow">
             <div class="card-body">
                 <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0">Anggota Ronda</h5>
+                <div class="d-flex flex-column flex-md-row flex-xl-row justify-content-center justify-content-md-between justify-content-xl-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-3 mb-md-0">Anggota Ronda</h5>
                     @if($is_aktif)
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahAnggota">
-                        <i class="bi bi-person-plus"></i> Tambah
-                    </button>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahAnggota">
+                            <i class="bi bi-person-plus"></i> Tambah
+                        </button>
+                        <button type="button" id="btn-hapus" class="btn btn-danger d-none">Hapus warga yang
+                            terpilih</button>
+                    </div>
                     @endif
                 </div>
 
                 <!-- List Anggota -->
                 @if(count($jadwals) > 0)
-                <ul class="list-group list-group-flush  overflow-auto overflow-md-visible" id="container-jadwal">
+                <ul class="list-group list-group-flush" id="container-jadwal">
 
                     @foreach($jadwals as $absen)
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 flex-nowrap">
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name={{ str_replace(' ', '+', $absen->nama_lengkap) }}&background=random"
-                                class="rounded-circle me-3" width="48" height="48">
-                            <div class="fw-semibold">
-                                {{ $absen->nama_lengkap }}
+                    <li class="list-group-item py-3">
+
+                        <div class="row align-items-center g-3">
+
+                            <!-- Informasi Anggota -->
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center">
+                                    @if($is_aktif)
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input checkbox-absen {{$absen->clear_absen == 1 ? 'd-none':''}}" type="checkbox" value="{{ $absen->id }}">
+                                        </div>
+                                    @endif
+
+                                    <img src="https://ui-avatars.com/api/?name={{ str_replace(' ', '+', $absen->nama_lengkap) }}&background=random"
+                                        class="rounded-circle me-3" width="52" height="52">
+
+                                    <div>
+                                        <div class="fw-semibold fs-5">
+                                            {{ $absen->nama_lengkap }}
+                                        </div>
+
+                                        <small class="text-muted">
+                                            ID #{{ $absen->id }}
+                                        </small>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Tombol -->
+                            <div class="col-12 col-md-6">
+
+                                <div class="d-flex justify-content-md-end gap-2 flex-wrap">
+                                    <button type="button"
+                                        class="btn btn-{{ $absen->status == 0 ? 'dark' : 'primary' }}">
+                                        @if($absen->clear_absen == 0)
+                                            <span>Belum Absen</span>
+                                        @else
+                                            @if($absen->status == 0)
+                                                <span>Sudah Absen (Izin)</span>
+                                            @else
+                                                <span>Sudah Absen (Hadir)</span>
+                                            @endif
+                                        @endif
+            
+                                    </button>
+
+                                    @if($is_aktif)
+                                    <form class="form-hapus" action="{{ route('absensi.hapus', $absen->id) }}" method="POST">
+
+                                        @csrf
+
+                                        <button class="btn btn-outline-danger {{$absen->clear_absen == 1 ? 'd-none':''}}">
+                                            <i class="bi bi-trash me-1"></i>
+                                            Hapus
+                                        </button>
+                                    </form>
+                                    @endif
+
+
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-evenly gap-2">
-                            <button type="button" class="btn btn-{{ $absen->status === 0 ? 'dark':'primary' }}">
-                                {{ $absen->status === 0 ? 'Belum absen':'Sudah absen' }}
-                            </button>
-                            @if($is_aktif)
-                            <form class="form-hapus" action="{{ route('absensi.hapus', $absen->id) }}" method="post">
-                                @csrf
-                                <button class="btn btn-outline-danger btn-sm py-2 px-4">
-                                    <i class="bi bi-trash"></i>Hapus
-                                </button>
-                            </form>
-                            @endif
 
-                        </div>
                     </li>
                     @endforeach
-
-                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=Muammar&background=random"
-                                class="rounded-circle me-3" width="48" height="48">
-                            <div class="fw-semibold">Dedi Firmansyah</div>
-                        </div>
-                        <button class="btn btn-outline-danger btn-sm">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </li>
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=Rudi+Hartono&background=random"
-                                class="rounded-circle me-3" width="48" height="48">
-                            <div class="fw-semibold">Rudi Hartono</div>
-                        </div>
-                        <button class="btn btn-outline-danger btn-sm">
-                            <i class="bi bi-trash"></i>Hapus
-                        </button>
-                    </li> -->
 
                 </ul>
                 @else
@@ -142,8 +167,9 @@
 
 
 <div class="modal fade" id="modalTambahAnggota" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <form class="modal-content rounded-4 shadow" method="post" action="{{ route('absensi.add', $jadwal_id) }}">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <form class="modal-content rounded-4 shadow" method="post" id="form-tambah-anggota"
+            action="{{ route('absensi.add', $jadwal_id) }}">
             @csrf
 
             <div class="modal-header">
@@ -152,20 +178,56 @@
             </div>
 
             <div class="modal-body">
-                <label class="form-label fw-semibold">Pilih Warga</label>
-                <select class="form-select form-select-lg" id="daftar-user" name="user">
-                    <option selected disabled>Pilih Warga</option>
-                    @foreach($users as $user)
-                    <option value="{{ $user->id }}">
-                        {{ $user->nama_lengkap }}
-                    </option>
-                    @endforeach
-                </select>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Pilih Warga</label>
+
+                    <!-- Pencarian -->
+                    <div class="input-group mb-3">
+
+                        <input type="search" class="form-control" id="search-user" placeholder="Cari nama warga...">
+                    </div>
+
+                    <!-- Warga yang Dipilih -->
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">
+                            Warga Terpilih
+                        </label>
+
+                        <div id="selected-user-container" class="border rounded p-2 bg-light" style="min-height:60px;">
+                        </div>
+
+                        <small class="text-muted">
+                            Warga yang dipilih akan muncul di sini.
+                        </small>
+                    </div>
+
+                    <!-- Daftar Warga -->
+                    <div class="border rounded px-2" style="max-height:250px; overflow-y:auto;" id="list-user">
+
+                        @foreach($users as $user)
+
+                        <div class="form-check py-2 border-bottom user-item">
+
+                            <input class="form-check-input user-check" data-id="{{$user->id}}"
+                                data-name="{{$user->nama_lengkap}}" type="checkbox" name="users[]"
+                                value="{{ $user->id }}" id="user{{ $user->id }}">
+
+                            <label class="form-check-label w-100" for="user{{ $user->id }}" style="cursor:pointer;">
+                                {{ $user->nama_lengkap }}
+                            </label>
+
+                        </div>
+
+                        @endforeach
+
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Tambahkan</button>
+                <button type="button" class="btn btn-primary" data-id="{{ $jadwal->id }}"
+                    id="btn-tambah-anggota">Tambahkan</button>
             </div>
 
         </form>
@@ -175,4 +237,5 @@
 
 @push('scripts')
 <script type="module" src="{{ asset('resources/js/admin/nonaktifkan.js') }}"></script>
+<script type="module" src="{{ asset('resources/js/admin/tambah_anggota_ronda.js') }}"></script>
 @endpush

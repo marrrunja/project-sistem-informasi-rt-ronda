@@ -61,7 +61,7 @@ class ReportController extends Controller
                 $data['foto']->storeAs('images-report', $namaGambar, 'public');
             }
 
-            Report::insert([
+            $report = Report::create([
                 'isi_laporan' => $data['deskripsi'],
                 'foto' => $namaGambar,
                 'user_id' => $request->session()->get('user_id'),
@@ -69,6 +69,16 @@ class ReportController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            DB::table("history_reports")->insert([
+                "report_id" => $report->id,
+                "title" => "Laporan Diajukan",
+                "description" => "Laporan telah berhasil dikirim dan menunggu verifikasi Ketua RT.",
+                "tanggal_aksi" => Carbon::now()->toDateString(),
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now(),
+            ]);
+
             DB::commit();
 
             $flashMessage = [

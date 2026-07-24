@@ -29,7 +29,7 @@ class AuthService{
     {
         $user = User::where('username', '=', $data['username'])->first();
         if ($user) {
-            if($user->status == "0"){
+            if($user->status == false){
                 $error = "Akun sudah diblokir";
                 return false;
             }

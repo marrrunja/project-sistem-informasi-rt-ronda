@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_token" content="{{ csrf_token() }}">
-    <!-- <meta name="_baseurl" content="{{ env('BASE_URL') }}"> -->
-    <meta name="_baseurl" content="{{ config('app.base_url') }}">
+    <meta name="_baseurl" content="{{ env('BASE_URL') }}">
+    <!-- <meta name="_baseurl" content="{{ config('app.base_url') }}"> -->
     <meta name="description"
         content="SIRATA adalah sistem terpadu yang meningkatkan keamanan masyarakat RT. Platform ini memanfaatkan teknologi untuk menciptakan lingkungan yang aman, terhubung, dan efisien bagi seluruh warga.">
 
@@ -348,6 +348,7 @@
     <script type="module" src="{{ asset('resources/js/utility/variabel.js') }}"></script>
     <script type="module" src="{{ asset('resources/js/utility/apiData.js') }}"></script>
     <script type="module" src="{{ asset('resources/js/logout.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @stack('scripts')
 </body>
 

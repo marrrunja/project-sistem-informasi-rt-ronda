@@ -6,40 +6,55 @@ use Mpdf\Mpdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class AbsensiController extends Controller
 {
-    public function add(Request $request)
+    public function add(Request $request):JsonResponse
     {
-        $user_id = $request->user;
+        $users = $request->users;
         $jadwal_id = $request->id;
-        if($user_id === null || $jadwal_id === null){
-            return redirect()->back()->with([
-                'status' => 'Gagal',
-                'message' => 'User id dan juga jadwal id tidak boleh kosong',
-                'icon' => 'error'
+        if(count($users) < 1 || $jadwal_id === null){
+            return response()->json([
+                "status" => "Gagal",
+                "message" => "Terjadi kesalahan, silahkan periksa kembali jadwal serta warga yang ditambahkan",
+                "icon" => "error",
             ]);
         }
 
-        $insert = DB::table('absensis')->insert([
-            'status' => 0,
-            'id_jadwal' => $jadwal_id,
-            'user_id' => $user_id
-        ]);
+        DB::beginTransaction();
+        try {
+           
+            foreach($users  as $id){
+                $userInSameJadwal = DB::table("absensis")
+                                    ->where("id_jadwal", $jadwal_id)
+                                    ->where("user_id", $id)
+                                    ->count();
 
-        if($insert > 0){
-            return redirect()->back()->with([
-                'status' => 'Berhasil',
-                'message' => 'Berhasil menambahkan user ke dalam jadwal',
-                'icon' => 'success'
+                if($userInSameJadwal > 0) throw new \Exception();
+                DB::table("absensis")->insert([
+                    "status" => 0,
+                    "id_jadwal" => $jadwal_id,
+                    "user_id" => $id,
+                ]);
+            }
+            DB::commit();
+            return response()->json([
+                'message' => "Berhasil menambahkan warga ke dalam jadwal",
+                'icon' => 'success',
+                'status' => 'Berhasil'
+            ]);
+           
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => "Gagal menambahkan warga ke dalam jadwal",
+                'icon' => 'error',
+                'status' => 'Gagal'
             ]);
         }
-        return redirect()->back()->with([
-            'status' => 'Gagal',
-            'message' => 'Gagal menambahkan user ke dalam jadwal!',
-            'icon' => 'error'
-        ]);
     }
 
     public function hapus(Request $request){
@@ -79,7 +94,7 @@ class AbsensiController extends Controller
                         ->first()->jadwal_masuk;       
         $isPast = Carbon::parse($tanggal_masuk);
 
-        if($isPast->isPast()){
+        if($isPast->isPast() && !$isPast->isCurrentDay()){
              return response()->json([
                 'message' => "Gagal melakukan absensi, jadwal sudah lewat!!",
                 'icon' => 'error',
@@ -147,5 +162,63 @@ class AbsensiController extends Controller
         ];
         $mpdf->writeHTML(view('admin.cetak-absensi',$data));
         $mpdf->Output('Absensi warga bulan ini.pdf','I');
+    }
+
+
+    public function searchAnggota(Request $request):string
+    {
+          $absensiAktif = DB::table('absensis')
+                ->join('jadwals', 'absensis.id_jadwal', '=', 'jadwals.id')
+                ->join('users', 'absensis.user_id', 'users.id')
+                ->where('jadwals.is_aktif', 1)
+                ->select('users.id');
+
+
+        $username = $request->input('username');
+        $users = DB::table("users")
+                ->whereNotIn("id", $absensiAktif)
+                ->whereNotIn("id", json_decode($request->input("ids")))
+                ->where("nama_lengkap", "like", '%'.$username.'%')
+                ->where("status", 1)
+                ->where("is_admin", 0)
+                ->select("id", "nama_lengkap")
+                ->get();
+
+        return view("partial.list-anggota-ronda", ["users" => $users])->render();
+    }
+
+    public function deleteUsers(Request $request){
+        $idsAbsen = $request->idsAbsensi;
+        if(count($idsAbsen) < 1){
+            return response()->json([
+                'message' => "Tidak ada warga yang dipilih",
+                'icon' => 'error',
+                'status' => 'Gagal'
+            ]);
+        }
+        DB::beginTransaction();
+        try {
+            $clearAbsen = DB::table("absensis")
+                        ->whereIn("id", $idsAbsen)
+                        ->where("status", 1)
+                        ->count();
+            if($clearAbsen > 0) throw new \Exception();
+            foreach($idsAbsen as $id){
+                DB::table("absensis")->where("id", $id)->delete();
+            }
+            DB::commit();
+            return response()->json([
+                'message' => "Berhasil menghapus warga di dalam jadwal",
+                'icon' => 'success',
+                'status' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => "Terjadi kesalahan, gagal menghapus warga di jadwal",
+                'icon' => 'error',
+                'status' => 'Gagal'
+            ]);
+        }
     }
 }

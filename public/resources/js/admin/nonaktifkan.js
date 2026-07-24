@@ -3,9 +3,6 @@ import { showConfirm } from "../utility/alert.js";
 const formNonaktif = document.getElementById("form-nonaktif");
 const formHapus = document.getElementsByClassName("form-hapus");
 
-
-
-
 async function nonaktif(e) {
     e.preventDefault();
     await showConfirm("Anda yakin ingin menonaktifkan jadwal?", "warning", "Iya").then(async (result) => {

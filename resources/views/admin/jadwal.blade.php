@@ -27,7 +27,7 @@
                     <p class="text-muted mb-1"><i class="bi bi-clock"></i> 19:00 - 06:00</p>
                     <p class="text-muted"><i class="bi bi-people"></i> {{ $jadwal->total_anggota }} Anggota</p>
                     <div class="d-flex justify-content-end">
-                        <a href="/jadwal/detail/{{ $jadwal->id }}" class="btn btn-outline-primary btn-sm">Detail</a>
+                        <a href="/admin/jadwal/detail/{{ $jadwal->id }}" class="btn btn-outline-primary btn-sm">Detail</a>
                     </div>
                 </div>
             </div>

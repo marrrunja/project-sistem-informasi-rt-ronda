@@ -11,6 +11,12 @@ let container = document.getElementById("laporan-container");
 const modalBody = document.getElementById("body-modal");
 
 
+const statusLaporan = {
+    "diajukan":"primary",
+    "ditinjau":"warning",
+    "selesai":"success",
+};
+
 function hilangkanElemenPesan(){
     document.getElementById("pesan").innerText = "";
 }
@@ -49,7 +55,7 @@ async function getData(){
                                 <div class="col-5 col-md-5 col-xl-2">
                                     <div class="d-flex flex-column">
                                         <small>${formatTanggalIndo(data.created_at)}</small>
-                                        <span class="badge text-bg-primary w-sm-25 w-md-25 w-lg-25 mt-2">${data.status}</span>
+                                        <span class="badge text-bg-${statusLaporan[data.status]} w-sm-25 w-md-25 w-lg-25 mt-2">${data.status}</span>
                                     </div>
                                 </div>
                             </div>

@@ -18,7 +18,7 @@ async function jadwal(e) {
         card = document.createElement("div");
         card.classList.add("col-12");
         card.classList.add("col-md-8");
-        card.classList.add("col-xl-4");
+        card.classList.add("col-xl-5");
         let elementCard = `
     <div class="card border shadow-0">
     <div class="card-body">

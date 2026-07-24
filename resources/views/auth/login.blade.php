@@ -21,9 +21,7 @@
                             <h3 class="card-title font-utama color-utama text-center">SIRATA</h3>
                             <h4 class="mb-3 text-center mt-3">Login Akun</h4>
                             @if(Session::has('status'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ Session::get('status') }}
-                            </div>
+                                {!! showAlertOriginal('danger', Session::get('status')) !!}
                             @endif
                             <div class="mb-3">
                                 <label for="username" class="form-label fw-semibold">Username</label>

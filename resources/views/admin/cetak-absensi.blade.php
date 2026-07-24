@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Laporan Absensi Ronda Bulan Ini</title>
@@ -71,76 +72,76 @@
             font-size: 10px;
             color: #777;
         }
+
         .mb-2 {
-            margin-bottom:10px;
+            margin-bottom: 10px;
         }
-        .mb-1{
-            margin-bottom:2px;
+
+        .mb-1 {
+            margin-bottom: 2px;
         }
-        .card{
-            padding-top:5px;
-            padding-bottom:15px;
-            padding-left:10px;
-            padding-right:10px;
-            margin-bottom:15px;
-            border:1px solid rgba(0, 0, 0, .3);
-            border-radius:5px;
+
+        .card {
+            padding-top: 5px;
+            padding-bottom: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, .3);
+            border-radius: 5px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="header">
-    <h2>LAPORAN ABSENSI RONDA</h2>
-    <p>Periode: <strong>{{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</strong></p>
-    <p>RT / RW / Kecamatan</p>
-</div>
-<div class="info">
-    <strong>Total Data:</strong> {{ count($absens) }} entri absensi  
-</div>
-@foreach($absens as $absen)
-<div class="card">
-    <h4 class="mb-1">Jadwal  {{ \Carbon\Carbon::parse($absen->jadwal_masuk)->translatedFormat('j F Y') }}</h4>
-    @if(App\Models\Absensi::getAllDataByJadwalId($absen->id)->count() > 0)
-    <table>
-        <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama Warga</th>
-            <th>Tanggal Ronda</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="header">
+        <h2>LAPORAN ABSENSI RONDA</h2>
+        <p>Periode: <strong>{{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</strong></p>
+        <p>RT / RW / Kecamatan</p>
+    </div>
+    <div class="info">
+        <strong>Total Data:</strong> {{ count($absens) }} entri absensi
+    </div>
+    @foreach ($absens as $absen)
+        <div class="card">
+            <h4 class="mb-1">Jadwal {{ \Carbon\Carbon::parse($absen->jadwal_masuk)->translatedFormat('j F Y') }}</h4>
+            @if (App\Models\Absensi::getAllDataByJadwalId($absen->id)->count() > 0)
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Warga</th>
+                            <th>Tanggal Ronda</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-        @foreach (App\Models\Absensi::getAllDataByJadwalId($absen->id) as $i => $a)
-    
-            @php
-                $isHadir = $a->status == 1;
-            @endphp
-    
-            <tr class="{{ $isHadir ? 'row-hadir' : 'row-alpha' }}">
-                <td style="text-align: center; width: 40px;">{{ $i + 1 }}</td>
-                <td>{{ $a->nama_lengkap }}</td>
-                <td>{{ date('d-m-Y H:i', strtotime($absen->jadwal_masuk)) }}</td>
-                <td style="text-align: center;">
-                    {{ $isHadir ? 'Hadir' : 'Tidak Hadir' }}
-                </td>
-            </tr>
-    
-        @endforeach
-    
-        </tbody>
-    </table>
-    @else
-    <strong align="center">Belum ada warga yang terdaftar di jadwal ini</strong>
-    @endif
-</div>
-
-@endforeach
-<div class="footer">
-   Dicetak pada: {{ \Carbon\Carbon::now('Asia/Jakarta')->format('d-m-Y H:i') }} WIB
-</div>
+                        @foreach (App\Models\Absensi::getAllDataByJadwalId($absen->id) as $i => $a)
+                            @php
+                                $isHadir = $a->status == 1;
+                            @endphp
+                            <tr class="{{ $isHadir ? 'row-hadir' : 'row-alpha' }}">
+                                <td style="text-align: center; width: 40px;">{{ $i + 1 }}</td>
+                                <td>{{ $a->nama_lengkap }}</td>
+                                <td>{{ date('d-m-Y H:i', strtotime($absen->jadwal_masuk)) }}</td>
+                                <td style="text-align: center;">
+                                    {{ $isHadir ? 'Hadir' : 'Tidak Hadir' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <strong align="center">Belum ada warga yang terdaftar di jadwal ini</strong>
+            @endif
+        </div>
+    @endforeach
+    <div class="footer">
+        Dicetak pada: {{ \Carbon\Carbon::now('Asia/Jakarta')->format('d-m-Y H:i') }} WIB
+    </div>
 
 </body>
+
 </html>

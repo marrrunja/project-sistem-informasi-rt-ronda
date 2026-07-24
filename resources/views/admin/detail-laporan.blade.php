@@ -62,7 +62,7 @@
                                     Selesai
                                 </option>
                             </select>
-                            <button type="submit" class="btn btn-success form-control">Simpan Perubahan</button>
+                            <button type="submit" {{ $report->status == 'selesai' ? 'disabled':'' }} class="btn btn-success form-control">Simpan Perubahan</button>
                         </form>
                     </div>
 

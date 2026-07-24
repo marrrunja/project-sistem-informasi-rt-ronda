@@ -10,10 +10,6 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 class AuthServiceProvider extends ServiceProvider implements DeferrableProvider
 {
 
-   
-    /**
-     * Register services.
-     */
     public function register(): void
     {
          $this->app->singleton(AuthService::class, function ($app) {

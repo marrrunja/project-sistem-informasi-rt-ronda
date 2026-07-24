@@ -22,9 +22,7 @@
                             <h4 class="mb-3 text-center mt-3">Buat akun</h4>
                             <p class="text-center">Gabung SIRATA untuk lingkungan lebih aman</p>
                             @if(Session::has('status') && Session::has('message'))
-                                <div class="alert {{ Session::get('status') === 'berhasil' ? 'alert-success':'alert-danger' }}" role="alert">
-                                    {{ Session::get('message') }}
-                                </div>
+                                {!! showAlertOriginal(Session::get('status') == 'berhasil' ? 'success':'danger', Session::get('message')) !!}
                             @endif
                             <div class="mb-3">
                                 <label for="nama" class="form-label fw-semibold">Nama lengkap</label>

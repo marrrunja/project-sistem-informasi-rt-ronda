@@ -1,6 +1,6 @@
 @extends('template.template')
 
-@section('title', 'Dashboard')
+@section('title', 'Laporan')
 
 @push('styles')
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -109,24 +109,7 @@
             $color = null;
             @endphp
             @foreach($reports as $report)
-                @php $color = 'primary'; @endphp
-
-                @switch($report->status)
-                    @case('Diajukan')
-                        @php $color = 'primary'; @endphp
-                        @break
-
-                    @case('Ditinjau')
-                        @php $color = 'warning'; @endphp
-                        @break
-
-                    @case('Selesai')
-                        @php $color = 'success'; @endphp
-                        @break
-
-                    @default
-                        @php $color = 'primary'; @endphp
-                @endswitch
+                
             <div class="col-12 col-md-10">
                 <div class="card py-2 px-3 border-0">
                     <div class="card-body">
@@ -138,12 +121,13 @@
                                     <small>Dilaporkan oleh {{$report->nama_lengkap}}</small>
                                 </div>
                             </div>
+                           
                             <div class="col-5 col-md-5 col-xl-2">
                                 <div class="d-flex flex-column">
                                     <small>
-                                        {{ \Carbon\Carbon::parse($report->created_at)->translatedFormat('j F Y') }}
+                                        {{ formatTanggalIndonesia($report->created_at) }}
                                     </small>
-                                    <span class="badge text-bg-{{ $color }} w-sm-25 w-md-25 w-lg-25 mt-2">
+                                    <span class="badge text-bg-{{ formatColorStatusLaporan($report->status) }} w-sm-25 w-md-25 w-lg-25 mt-2">
                                         {{ $report->status }}
                                     </span>
                                 </div>

@@ -41,11 +41,10 @@ async function handleSubmit(e)
     const namaLengkap = document.getElementById("nama");
     const password = document.getElementById("password");
     const password2 = document.getElementById("password2");
-    console.log(username);
+    
     
     try{
         await register(username, namaLengkap, password, password2);
-        console.log("Ok");
 
     }catch(error){
         showAlertError("ERROR" + error);
