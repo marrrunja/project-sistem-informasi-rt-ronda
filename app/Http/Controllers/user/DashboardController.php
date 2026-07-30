@@ -60,7 +60,7 @@ class DashboardController extends Controller
 
     public function jadwal(Request $request)
     {
-        $jadwals = DB::table('jadwals')->where('is_aktif', '=', 1)->orderBy('jadwal_masuk', 'asc')->get();
+        $jadwals = DB::table('jadwals')->where('is_aktif', '=', 1)->orderBy('jadwal_masuk', 'desc')->get();
 
         return view('user.jadwal', [
             'jadwals' => $jadwals

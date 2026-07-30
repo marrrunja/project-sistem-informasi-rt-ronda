@@ -1,14 +1,13 @@
 import { BASEURL, formatTanggalIndo } from "../utility/variabel.js";
-import { 
-    getDataReport, getTotalDataFromReport, getDetailLaporan,getFotoFromReport
-} from "../utility/apiData.js";
-
+import { getDataReport, getTotalDataFromReport, getDetailLaporan,getFotoFromReport } from "../utility/apiData.js";
 import { showAlertError, showAlertSuccess } from "../utility/alert.js";
 
-let offset = 0;
+
+let offset = parseInt(localStorage.getItem("offsetLaporan")) || 0;
 const loading = document.getElementById("loading");
 let container = document.getElementById("laporan-container");
 const modalBody = document.getElementById("body-modal");
+
 
 
 const statusLaporan = {
@@ -63,7 +62,8 @@ async function getData(){
                     </div>
                 </div>`;
         });
-        offset += 10;
+        offset += arrayData.length;
+        localStorage.setItem("offsetLaporan", offset);
         loading.style.display = "none";
     }catch(error){
         showElemenPesan(error);
@@ -100,6 +100,15 @@ async function showFotoFromReport(e){
     }
 }
 
+async function loadDataAwal() {
+    const savedOffset = offset;
+    offset = 0;
+    container.innerHTML = "";
+    while (offset < savedOffset) {
+        await getData();
+    }
+}
+
 async function loadData(){
     getData();
 }
@@ -110,4 +119,4 @@ tekan.addEventListener("click", loadData);
 container.addEventListener("click", showDetailData);
 modalBody.addEventListener("click", showFotoFromReport);
 
-getData();
+loadDataAwal();

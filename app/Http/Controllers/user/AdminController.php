@@ -37,8 +37,6 @@ class AdminController extends Controller
         $startOfWeek = now($formatWaktu)->startOfWeek();
         $endOfWeek   = now($formatWaktu)->endOfWeek();
 
-        // dump($startOfWeek);
-        // dd($endOfWeek);
 
         // Ambil semua jadwal minggu ini
         $jadwalMingguanIds = DB::table('jadwals')
@@ -62,7 +60,7 @@ class AdminController extends Controller
                 ->count();
 
             $persentaseKehadiran = $totalAbsensi > 0
-                ? round(($totalHadir / $totalAbsensi) * 100)
+                ? round(($totalHadir / $totalAbsensi) * 100, 2)
                 : 0;
         }
 
@@ -391,7 +389,7 @@ class AdminController extends Controller
                     ->join('jadwals', 'absensis.id_jadwal', '=', 'jadwals.id')
                     ->join('users', 'absensis.user_id', '=', 'users.id')
                     ->where('absensis.id_jadwal', '=', $id)
-                    ->select('absensis.id', 'absensis.status', 'users.nama_lengkap', 'absensis.clear_absen')
+                    ->select('absensis.id', 'absensis.status', 'users.nama_lengkap', 'users.id as user_id','absensis.clear_absen')
                     ->get();
         $data = [
             'jadwal_id' => $id,

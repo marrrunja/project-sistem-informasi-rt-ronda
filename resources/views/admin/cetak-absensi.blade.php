@@ -105,7 +105,7 @@
     </div>
     @foreach ($absens as $absen)
         <div class="card">
-            <h4 class="mb-1">Jadwal {{ \Carbon\Carbon::parse($absen->jadwal_masuk)->translatedFormat('j F Y') }}</h4>
+            <h4 class="mb-1">Jadwal {{ formatTanggalIndonesia($absen->jadwal_masuk) }}</h4>
             @if (App\Models\Absensi::getAllDataByJadwalId($absen->id)->count() > 0)
                 <table>
                     <thead>

@@ -195,3 +195,22 @@ export async function deleteUsersFromJadwal(url, token, idsAbsensi){
     let success = await response.json();
     return success;
 }
+
+export async function deleteUserFromJadwal(url, token, idAbsensi){
+    const response = await fetch(url + "/absensi/hapus", {
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json",
+            'X-CSRF-TOKEN': token
+        },
+        body:JSON.stringify({
+            id:idAbsensi,
+        })
+    });
+
+   if (!response.ok) {
+       throw new Error("ERROR " + response.status);
+    }
+    let success = await response.json();
+    return success;
+}

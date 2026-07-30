@@ -57,24 +57,24 @@ class AbsensiController extends Controller
         }
     }
 
-    public function hapus(Request $request){
+    public function hapus(Request $request):JsonResponse{
         $id = $request->id;
         if($id == null){
-            return redirect()->back()->with([
+            return response()->json([
                 'status' => 'Gagal',
                 'message' => 'id tidak boleh kosong',
                 'icon' => 'error'
-            ]); 
+            ]);
         }
         $delete = DB::table('absensis')->where('id', $id)->delete();
         if($delete > 0){
-            return redirect()->back()->with([
+             return response()->json([
                 'status' => 'Berhasil',
-                'message' => 'Berhasil menghapus warga di dalam jadwal',
-                'icon' => 'success'
+                'message' => 'Berhasil menghapus warga dari jadwal',
+                'icon' => 'success',
             ]);
         }
-        return redirect()->back()->with([
+        return response()->json([
             'status' => 'Gagal',
             'message' => 'Gagal menghapus warga dari jadwal, silahkan coba lagi!',
             'icon' => 'error'

@@ -27,7 +27,7 @@
                                 <label for="username" class="form-label fw-semibold">Username</label>
                                 <input type="text" name="username"
                                     class="form-control @error('username') is-invalid @enderror" id="username"
-                                    placeholder="Masukkan username">
+                                    placeholder="Masukkan username" value="{{old('username') ?? ''}}">
                                 @error('username')
                                 <span class="error invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

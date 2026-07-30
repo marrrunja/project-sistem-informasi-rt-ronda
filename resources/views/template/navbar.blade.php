@@ -10,13 +10,13 @@
           <a class="nav-link text-dark" href="#">Home</a>
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link text-dark" href="">About</a>
+          <a class="nav-link text-dark" href="#about">About</a>
         </li>
         <li class="nav-item px-3">
-            <a href="#" class="nav-link text-dark">Layanan</a>
+            <a href="#service" class="nav-link text-dark">Layanan</a>
         </li>
         <li class="nav-item px-3">
-            <a href="#" class="nav-link text-dark">Contacts</a>
+            <a href="#contact" class="nav-link text-dark">Contacts</a>
         </li>
       </ul>
     </div>

@@ -69,10 +69,12 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $reports->links() }}
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-12">
+          {{ $reports->links() }}
     </div>
 </div>
 @endsection

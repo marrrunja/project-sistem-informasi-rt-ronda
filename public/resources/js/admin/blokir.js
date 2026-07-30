@@ -1,16 +1,6 @@
-import {
-    BASEURL,
-    TOKEN
-} from "../utility/variabel.js";
-import {
-    blokirUser,
-    bukaBlokir
-} from "../utility/apiData.js";
-import {
-    showAlertError,
-    showConfirm,
-    showMessage
-} from "../utility/alert.js";
+import { BASEURL, TOKEN } from "../utility/variabel.js";
+import { blokirUser,  bukaBlokir } from "../utility/apiData.js";
+import { showAlertError, showConfirm, showSnackError,showSnackMessage } from "../utility/alert.js";
 
 const buttons = document.getElementsByClassName("btn-blokir");
 
@@ -42,7 +32,7 @@ for (let i = 0; i < buttons.length; i++) {
                     try {
                         const response = await blokirUser(BASEURL, buttons[i].dataset.id, TOKEN);
                         if (response.status == "Berhasil") {
-                            showMessage(response.message, response.icon, response.status);
+                            showSnackMessage(response.message, response.icon);
                             afterBlokir(i);
                         }
                     } catch (error) {
@@ -55,7 +45,7 @@ for (let i = 0; i < buttons.length; i++) {
             try{
                 const response = await bukaBlokir(BASEURL, buttons[i].dataset.id, TOKEN);
                 if(response.status == "Berhasil"){
-                    showMessage(response.message, response.icon, response.status);
+                    showSnackMessage(response.message, response.icon);
                     afterBukaBlokir(i);
                 }
             }catch(error){

@@ -5,7 +5,7 @@ import {
 import {
     tambahJadwal
 } from "../utility/apiData.js";
-import { showAlertError, showAlertSuccess, showMessage } from "../utility/alert.js";
+import { showAlertError, showAlertSuccess, showMessage, showSnackMessage } from "../utility/alert.js";
 const container = document.getElementById("container-jadwal");
 
 let card = null;
@@ -43,14 +43,14 @@ async function jadwal(e) {
         try{
             let response = await tambahJadwal(BASEURL, TOKEN, tanggal);
             if(response.status === "Berhasil"){
-                showMessage(response.message, response.icon, response.status);
+                showSnackMessage(response.message, response.icon);
                 setTimeout(function(){
                     document.location.reload(false);
                 }, 1500)
                 card.remove();
                 card = null;
             }
-            showMessage(response.message, response.icon, response.status);
+            showSnackMessage(response.message, response.icon);
         }catch(error){
             showAlertError(error);
         }

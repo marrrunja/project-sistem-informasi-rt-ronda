@@ -7,7 +7,8 @@ import {
 } from "./utility/apiData.js";
 import {
     showAlertError,
-    showMessage
+    showMessage,
+    showSnackMessage
 } from "./utility/alert.js";
 
 const btnHadir = document.getElementById("btnHadir");
@@ -18,7 +19,7 @@ async function absen(status) {
     if (status == "izin") {
         try {
             let response = await ubahAbsensi(BASEURL, TOKEN, "izin", btnIzin.dataset.id);
-            showMessage(response.message, response.icon, response.status);
+            showSnackMessage(response.message, response.icon);
             setTimeout(function () {
                 document.location.reload(false);
             }, 1500)
@@ -28,7 +29,7 @@ async function absen(status) {
     } else if (status == "hadir") {
         try {
             let response = await ubahAbsensi(BASEURL, TOKEN, "hadir", btnHadir.dataset.id);
-            showMessage(response.message, response.icon, response.status);
+            showSnackMessage(response.message, response.icon);
             setTimeout(function () {
                 document.location.reload(false);
             }, 1500)
@@ -41,7 +42,7 @@ async function absen(status) {
 async function absenIzin() {
     try {
         let response = await ubahAbsensi(BASEURL, TOKEN, "izin", btnIzin.dataset.id);
-        showMessage(response.message, response.icon, response.status);
+        showSnackMessage(response.message, response.icon);
         setTimeout(function () {
             document.location.reload(false);
         }, 1500)
@@ -53,7 +54,7 @@ async function absenIzin() {
 async function absenHadir() {
     try {
         let response = await ubahAbsensi(BASEURL, TOKEN, "hadir", btnHadir.dataset.id);
-        showMessage(response.message, response.icon, response.status);
+        showSnackMessage(response.message, response.icon);
         setTimeout(function () {
             document.location.reload(false);
         }, 1500)

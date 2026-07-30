@@ -12,7 +12,7 @@ class Absensi extends Model
         $absensi = DB::table('absensis')
             ->join('users', 'absensis.user_id', '=', 'users.id')
             ->where('absensis.id_jadwal', '=', $jadwalId)
-            ->select('users.nama_lengkap', 'users.alamat', 'absensis.status')
+            ->select('users.nama_lengkap', 'users.alamat', 'absensis.status', 'users.id')
             ->get();
         return $absensi;
     }

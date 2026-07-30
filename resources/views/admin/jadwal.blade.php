@@ -22,7 +22,7 @@
             <div class="card shadow-0 border {{ $is_aktif ? 'bg-dark text-white fw-semibold':false }}">
                 <div class="card-body">
                     <h5 class="card-title mb-2 {{ $is_aktif ? 'text-white fw-bold':false }}">
-                          {{ \Carbon\Carbon::parse($jadwal->jadwal_masuk)->translatedFormat('j F Y') }}
+                          {{ formatTanggalIndonesia($jadwal->jadwal_masuk) }}
                     </h5>
                     <p class="text-muted mb-1"><i class="bi bi-clock"></i> 19:00 - 06:00</p>
                     <p class="text-muted"><i class="bi bi-people"></i> {{ $jadwal->total_anggota }} Anggota</p>

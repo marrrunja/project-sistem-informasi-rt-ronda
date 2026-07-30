@@ -1,5 +1,5 @@
-import { showAlertError, showConfirm,  showMessage}  from "../utility/alert.js";
-import { deleteUsersFromJadwal, searchDataUser, tambahAnggotaJadwal } from "../utility/apiData.js";
+import { showAlertError, showConfirm,  showMessage, showSnackError, showSnackMessage}  from "../utility/alert.js";
+import { deleteUserFromJadwal, deleteUsersFromJadwal, searchDataUser, tambahAnggotaJadwal } from "../utility/apiData.js";
 import { BASEURL, TOKEN } from "../utility/variabel.js";
 
 
@@ -10,10 +10,16 @@ const searchUser = document.getElementById("search-user");
 const btnTambahAnggota = document.getElementById("btn-tambah-anggota");
 const btnHapus = document.getElementById("btn-hapus-anggota");
 const containerJadwal = document.getElementById("container-jadwal");
+const formHapus = document.getElementsByClassName("form-hapus");
 
+// user yang di select (object id dan name) untuk ditambahkan lagi ke dalam container list user
 const arrayListUserSelected = [];
+
+// idUser yang diselect, agar nanti di pencarian, tidak ada user yang sama
 const idUserSelected = [];
+
 const idAbsensiDelete = [];
+let deletedAbsensiId = [];
 const badgeColors = [
     "bg-primary",
     "bg-secondary",
@@ -24,6 +30,7 @@ const badgeColors = [
     "bg-dark"
 ];
 
+// menambahkan user ke dalam container list user, untuk nntinya ditambahkan ke jadwal
 function addUser(id, name) {
 
     const randomColor = badgeColors[Math.floor(Math.random() * badgeColors.length)];
@@ -39,6 +46,7 @@ function addUser(id, name) {
 
 }
 
+// mengembalikan user yang sudah di select untuk ditambahkan ke jadwal
 function restoreUser(id, name) {
     const formCheck = document.createElement("div");
     const className = "form-check py-2 border-bottom user-item";
@@ -55,13 +63,21 @@ function restoreUser(id, name) {
     listUser.appendChild(formCheck);
 }
 
+
+// mencari index dari array list user selected
+function initIndex(id){
+    const index = idUserSelected.indexOf(parseInt(id));
+    const findIndex = arrayListUserSelected.findIndex(user => user.id == id);
+
+    return [index, findIndex];
+}
+
 function handleReStoreUser(e) {
     if (e.target.classList.contains("btn-close")) {
         let id = e.target.dataset.id;
         let name = e.target.dataset.name;
 
-        const index = idUserSelected.indexOf(parseInt(id));
-        const findIndex = arrayListUserSelected.findIndex(user => user.id == id);
+        const [index,findIndex] = initIndex(id);
         restoreUser(arrayListUserSelected[findIndex].id, arrayListUserSelected[findIndex].name);
 
         if (index != -1) {
@@ -74,21 +90,24 @@ function handleReStoreUser(e) {
     }
 }
 
+function initSelectUser(id, name){
+    addUser(id, name);
+    idUserSelected.push(parseInt(id));
+
+    const userDeleted = {
+        id: id,
+        name: name,
+    };
+    arrayListUserSelected.push(userDeleted);
+}
+
 function selectUsers(e) {
     if (e.target.classList.contains("user-check")) {
         let id = e.target.dataset.id;
         let name = e.target.dataset.name;
 
         if (!idUserSelected.includes(id)) {
-            addUser(id, name);
-            idUserSelected.push(parseInt(id));
-
-            const userDeleted = {
-                id: id,
-                name: name,
-            };
-
-            arrayListUserSelected.push(userDeleted);
+            initSelectUser(id, name);
             e.target.parentElement.remove();
         }
         e.preventDefault();
@@ -96,11 +115,16 @@ function selectUsers(e) {
 
 }
 
+async function initSearchUser(value){
+    let data = await searchDataUser(BASEURL, value, idUserSelected);
+    listUser.innerHTML = data;
+}
+
+
 async function handleSearchUser(e) {
     if (e.key == "Enter") {
         try {
-            let data = await searchDataUser(BASEURL, e.target.value, idUserSelected);
-            listUser.innerHTML = data;
+            await initSearchUser(e.target.value);
         } catch (error) {
             showAlertError(error);
         }
@@ -127,7 +151,6 @@ async function handleTambahAnggota() {
         } catch (error) {
             showAlertError(error)
         }
-
     }
 }
 
@@ -142,21 +165,71 @@ function handleHapusWarga(e) {
             idAbsensiDelete.splice(idAbsensiDelete.indexOf(parseInt(e.target.value)));
         }
     }
+    if(e.target.classList.contains("btn-hapus-warga")){
+        deleteWarga(e.target.dataset.id, e.target.dataset.idu, e.target.dataset.name);
+    }
 }
 
-async function hapusWargaFromJadwal() {
+async function deleteWarga(idAbsensi, userId, name){
+    await showConfirm("Anda yakin ingin menghapus warga dari jadwal ronda?", "question", "Iya").then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                let response = await deleteUserFromJadwal(BASEURL, TOKEN, idAbsensi);
+                showSnackMessage(response.message, response.icon);
+                if(response.status == "Berhasil"){
+                    removeElemenCheckAbsen(idAbsensi);
+                    restoreUser(parseInt(userId), name);
+                    let btnHapus = getBtnHapus();
+                    if(idAbsensiDelete.length < 1)
+                        btnHapus.classList.add("d-none");
+                    
+                }
+            } catch (error) {
+                showSnackError(error);
+            }
+        }
+    });
+}
+
+
+function handleHapusWargaFromJadwal()
+{
+    for(let el of Array.from(document.getElementsByClassName("checkbox-absen"))){
+        let index = idAbsensiDelete.indexOf(parseInt(el.value));
+        if(index!=-1){
+            let checkAbsen = document.getElementById("check-absen-"+parseInt(el.value)).parentElement.parentElement.parentElement.parentElement.parentElement;
+            idAbsensiDelete.splice(index, 1);
+            checkAbsen.remove();
+            restoreUser(parseInt(el.dataset.uid), el.dataset.name);
+        }
+    }
+}
+
+function removeElemenCheckAbsen(id){
+    let checkAbsen = document.getElementById(`check-absen-${id}`);
+    console.log(checkAbsen);
+    let parentElement = checkAbsen.parentElement.parentElement.parentElement.parentElement.parentElement;
+    parentElement.remove();
+}
+
+
+
+function getBtnHapus(){
+    return document.getElementById("btn-hapus");
+}
+
+async function hapusWargaFromJadwal(e) {
     if (idAbsensiDelete.length < 1) showAlertError("Tidak ada warga yang dipilih!");
     else{
         await showConfirm("Anda yakin ingin menghapus warga dari jadwal?", "question", "Iya").then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     let response = await deleteUsersFromJadwal(BASEURL, TOKEN, idAbsensiDelete);
-                    showMessage(response.message, response.icon, response.status);
+                    showSnackMessage(response.message, response.icon);
                     if (response.status == "Berhasil") {
-                        document.getElementById("btn-hapus").disabled = true;
-                        setTimeout(() => {
-                            document.location.reload(false);
-                        }, 1000);
+                        handleHapusWargaFromJadwal();
+                        let btnHapus = getBtnHapus();
+                        btnHapus.classList.add("d-none");
                     }
                 } catch (error) {
                     showAlertError(error);

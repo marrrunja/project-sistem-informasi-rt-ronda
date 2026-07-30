@@ -14,7 +14,7 @@
 @include('template.user-navbar')
 
 <section id="welcome" class="pt-4 pb-3">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10">
                 <h1>Jadwal Ronda Minggu ini</h1>
@@ -27,7 +27,7 @@
 </section>
 
 <section id="id" class="pt-3 pb-4">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center gap-3">
             @foreach($jadwals as $jadwal)
             <div class="col-12 col-md-10">
@@ -71,11 +71,11 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $absens = \App\Models\Absensi::getAllDataByJadwalId($jadwal->id); 
+                                    $absens = \App\Models\Absensi::getAllDataByJadwalId($jadwal->id);
                                     @endphp
                                     @if(count($absens) > 0)
                                     @foreach($absens as $absen)
-                                    <tr>
+                                    <tr class="{{ $absen->id == Session::get('user_id') ? 'table-active': '' }}">
                                         <td class="text-center">{{$absen->nama_lengkap}}</td>
                                         <td class="text-center">
                                             {{ $absen->alamat ?? '-' }}

@@ -1,4 +1,4 @@
-import { showAlertError, showAlertSuccess, showMessage } from "./utility/alert.js";
+import { showAlertError, showAlertSuccess, showMessage, showSnackMessage } from "./utility/alert.js";
 import { getDetailUser, editData } from "./utility/apiData.js";
 import { BASEURL, TOKEN } from "./utility/variabel.js";
 const cardBody = document.getElementById("body-profil");
@@ -25,7 +25,7 @@ async function ubahData(e)
         const id = btnUbah.dataset.id;
         try{
             let response = await editData(BASEURL, id, nama.value, wa.value, alamat.value, TOKEN);
-            showMessage(response.message, response.icon, response.status);
+            showSnackMessage(response.message, response.icon);
             setTimeout(function(){
                 document.location.reload(false);
             }, 1500);

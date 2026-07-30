@@ -23,7 +23,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::get('/register','register')->middleware(OnlyNotLoginMiddleware::class);
     Route::post('/register','doRegister')->middleware(OnlyNotLoginMiddleware::class)->name('auth.register');
     Route::post('/login', 'doLogin')->middleware(OnlyNotLoginMiddleware::class)->name('auth.login');
-    Route::post('/logout', 'logout')->name('auth.logout');
+    Route::post('/logout', 'logout')->name('auth.logout')->middleware(OnlyLoginMiddleware::class);
 });
 
 Route::middleware([OnlyUserMiddleware::class, OnlyLoginMiddleware::class])->controller(DashboardController::class)->group(function(){
@@ -68,7 +68,7 @@ Route::middleware([OnlyAdminMiddleware::class, OnlyLoginMiddleware::class])->con
 
 Route::middleware(OnlyLoginMiddleware::class)->controller(AbsensiController::class)->group(function(){
     Route::post('absensi/add', 'add')->name('absensi.add')->middleware(OnlyAdminMiddleware::class);
-    Route::post('/absensi/hapus/{id}', 'hapus')->name('absensi.hapus')->middleware(OnlyAdminMiddleware::class);
+    Route::delete('/absensi/hapus', 'hapus')->name('absensi.hapus')->middleware(OnlyAdminMiddleware::class);
     Route::post('/absensi/ubah', 'ubah');
     Route::get('/absensi/cetak', 'cetakAbsensi')->middleware(OnlyAdminMiddleware::class);
     Route::get("/absensi/anggota", 'searchAnggota')->middleware(OnlyAdminMiddleware::class);

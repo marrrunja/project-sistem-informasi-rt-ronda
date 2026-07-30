@@ -3,14 +3,14 @@
 
 
 @section('body')
-<div class="container py-4">
+<div class="container py-2 py-md-4">
 
     <!-- Header Profil -->
     <div class="card border mb-4">
         <div class="card-body">
             <div class="row align-items-center">
 
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <div class="d-flex align-items-center">
 
                         <img src="https://ui-avatars.com/api/?name={{ str_replace(' ', '+',$user->nama_lengkap) }}&background=random"
@@ -32,15 +32,6 @@
                         </div>
 
                     </div>
-                </div>
-
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="bi bi-pencil-square"></i>
-                        Edit Data
-                    </a>
-
                 </div>
 
             </div>
@@ -363,7 +354,7 @@
                                         }
                                     @endphp
                                 <tr>
-                                    <td> {{ \Carbon\Carbon::parse($row->created_at)->translatedFormat('j F Y') }}</td>
+                                    <td> {{ formatTanggalIndonesia($row->created_at) }}</td>
                                     <td>
                                         <span>{{ $row->kategori }}</span>
                                     </td>

@@ -36,3 +36,40 @@ export async function showMessage(text, icon, status) {
         text:text
     });
 }
+
+
+export async function showSnackMessage(message, icon){
+    return await Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: icon,
+        title: message,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+}
+
+export async function showSnackSuccess(message){
+    return await Swal.fire({
+        toast:true,
+        position:'bottom-end',
+        icon:'success',
+        title:'message',
+        showCancelButton:false,
+        timer:3000,
+        timerProgressBar:true,
+    });
+}
+
+export async function showSnackError(message){
+    return await Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: "error",
+        title: message,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+}

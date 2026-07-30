@@ -3,13 +3,10 @@
 
 <div class="row">
     @if(Session::has('message'))
-    <script>
-        Swal.fire({
-        title: "{{ Session::get('status') }}",
-        icon: "{{ Session::get('icon') }}",
-        draggable: true,
-        text:"{{ Session::get('message') }}"
-    });
+    <script type="module">
+        import { showSnackMessage } from "{{ asset('resources/js/utility/alert.js') }}";
+        showSnackMessage("{{ Session::get('message') }}","{{ Session::get('icon') }}");
+    </script>
     </script>
     @endif
     <div class="col-12 col-md-12 col-xl-7">

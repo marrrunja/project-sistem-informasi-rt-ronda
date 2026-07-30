@@ -5,14 +5,9 @@
 @section('body')
 
 @if(Session::has('status'))
-<script>
-    Swal.fire({
-        title: "{{ Session::get('status') }}",
-        icon: "{{ Session::get('icon') }}",
-        draggable: true,
-        text: "{{ Session::get('message') }}"
-    });
-
+<script type="module">
+    import {showSnackMessage} from "{{ asset('resources/js/utility/alert.js') }}";
+    showSnackMessage("{{ Session::get('message') }}","{{ Session::get('icon') }}");
 </script>
 @endif
 
@@ -38,7 +33,7 @@
                     <div class="col-md-6">
                         <div class="text-muted small">Tanggal</div>
                         <div class="fw-semibold fs-5">
-                            {{ \Carbon\Carbon::parse($jadwal->jadwal_masuk)->translatedFormat('j F Y') }}
+                            {{ formatTanggalIndonesia($jadwal->jadwal_masuk) }}
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -88,7 +83,7 @@
                 <ul class="list-group list-group-flush" id="container-jadwal">
 
                     @foreach($jadwals as $absen)
-                    <li class="list-group-item py-3">
+                    <li class="list-group-item py-3 anggota-ronda">
 
                         <div class="row align-items-center g-3">
 
@@ -97,7 +92,7 @@
                                 <div class="d-flex align-items-center">
                                     @if($is_aktif)
                                         <div class="form-check me-3">
-                                            <input class="form-check-input checkbox-absen {{$absen->clear_absen == 1 ? 'd-none':''}}" type="checkbox" value="{{ $absen->id }}">
+                                            <input class="form-check-input checkbox-absen {{$absen->clear_absen == 1 ? 'd-none':''}}" type="checkbox" value="{{ $absen->id }}" id="check-absen-{{$absen->id}}" data-uid="{{$absen->user_id}}" data-name="{{ $absen->nama_lengkap }}">
                                         </div>
                                     @endif
 
@@ -136,15 +131,10 @@
                                     </button>
 
                                     @if($is_aktif)
-                                    <form class="form-hapus" action="{{ route('absensi.hapus', $absen->id) }}" method="POST">
-
-                                        @csrf
-
-                                        <button class="btn btn-outline-danger {{$absen->clear_absen == 1 ? 'd-none':''}}">
-                                            <i class="bi bi-trash me-1"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    <button data-id="{{$absen->id}}" data-name="{{$absen->nama_lengkap}}" data-idu="{{$absen->user_id}}" class="btn btn-outline-danger btn-hapus-warga {{$absen->clear_absen == 1 ? 'd-none':''}}">
+                                        <i class="bi bi-trash me-1"></i>
+                                        Hapus
+                                    </button>
                                     @endif
 
 
